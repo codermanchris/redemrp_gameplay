@@ -10,7 +10,7 @@ These jobs are a work in progress. If you want to see these jobs in action, we h
 * Jobs  
   * Bounty Hunting **[INCOMPLETE]**
   * Delivery **[INCOMPLETE]**
-  * Doctor **[INCOMPLETE]**
+  * Doctor **[IN DEVELOPMENT]**
   * Fisher **[INCOMPLETE]**
   * Hunter **[INCOMPLETE]**
   * Lawman **[INCOMPLETE]**
