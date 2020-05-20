@@ -1,0 +1,5 @@
+var doctor = {
+    init: function() {
+        
+    } 
+}

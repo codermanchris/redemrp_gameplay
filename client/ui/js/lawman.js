@@ -1,0 +1,5 @@
+var lawman = {
+    init: function() {
+        
+    }
+}

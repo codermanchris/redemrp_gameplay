@@ -1,0 +1,38 @@
+#bountyhunter {
+    display: none;
+    
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -200px;
+    margin-left: -300px;
+
+    width: 600px;
+    height: 400px;
+    background-color: #333;
+    color: #a2a2a2;
+}
+
+#delivery {
+    display: none;
+}
+
+#doctor {
+    display: none;
+}
+
+#fisher {
+    display: none;
+}
+
+#hunter {
+    display: none;
+}
+
+#lawman {
+    display: none;
+}
+
+#moonshiner {
+    display: none;
+}

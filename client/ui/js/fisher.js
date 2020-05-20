@@ -1,0 +1,5 @@
+var fisher = {
+    init: function() {
+        
+    }  
+}

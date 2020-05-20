@@ -1,0 +1,5 @@
+var hunter = {
+    init: function() {
+        
+    }
+}

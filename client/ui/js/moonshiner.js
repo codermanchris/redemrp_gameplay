@@ -1,0 +1,5 @@
+var moonshiner = {
+    init: function() {
+        
+    }
+}
