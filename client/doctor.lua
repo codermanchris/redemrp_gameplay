@@ -23,10 +23,13 @@ Helpers.PacketHandler('doctor:ClearRequest', function(data)
 end)
 
 -- The player has used a bandage and we need to heal
-Helpers.PacketHandler('doctor:UseBandage', function (data) -- { HealAmount = 50 })
+Helpers.PacketHandler('doctor:UseBandage', function(data) -- { HealAmount = 50 })
     Doctor.UseBandage(data.HealAmount)
 end)
 
+Helpers.PacketHandler('doctor:TreatPlayer', function(data)
+    Doctor.TreatPlayer(data.Revive, data.Coords)
+end)
 -- Class Functions
 
 -- We need to initialize the blips and the prompts
@@ -173,24 +176,56 @@ function Doctor.HandleOffDuty(playerPed, playerCoords)
     end
 end
 
-function Doctor.HandleOnDuty(playerPed, playerCoords)
-    --[[ if we're close enough to duty marker..
-    if (Doctor.Closest.Distance < 5.0) then
-        -- draw duty marker
-        Helpers.DrawMarker(Doctor.CurrentLocation.Coords, Colors.Marker)
+function Doctor.TreatPlayer(revive, coords)
+    if (revive) then
+        local pl = Citizen.InvokeNative(0x217E9DC48139933D)
+        local ped = Citizen.InvokeNative(0x275F255ED201B937, pl)
+        SetEntityCoords(ped, coords.x, coords.y, coords.z)
+        FreezeEntityPosition(ped, true)
+        Citizen.InvokeNative(0x71BC8E838B9C6035, ped)
+        Citizen.InvokeNative(0x0E3F4AF2D63491FB)
+    else
+        Doctor.HealPlayer()
+    end
+end
 
-        -- if we're close enough to buy marker, let's show the prompt
-        if (Doctor.Closest.Distance < 1.0) then
-            Helpers.Prompt(Doctor.OffDutyPrompt, function()
-                Helpers.Packet('doctor:GoOffDuty', { LocationId = Doctor.Closest.Index })
-            end)
-        else
-            -- cancel prompt if we ran too far away
-            if (Doctor.Closest.Distance > 1.5) then
-                Helpers.CancelPrompt(Doctor.OffDutyPrompt)
+function Doctor.HandleOnDuty(playerPed, playerCoords)       
+
+    -- get aiming target
+    local isAiming, aimTarget = GetEntityPlayerIsFreeAimingAt(PlayerId())
+    if (isAiming and DoesEntityExist(aimTarget)) then                
+
+        -- get aiming handle and make sure its a player
+        local playerHandle = NetworkGetPlayerIndexFromPed(aimTarget)    
+        if (NetworkIsPlayerActive(playerHandle)) then
+
+            -- get target ped, coords and health
+            local targetPed = GetPlayerPed(playerHandle)
+            local targetCoords = GetEntityCoords(targetPed)
+            local targetHealth = Citizen.InvokeNative(0x36731AC041289BB1, targetPed, 0, Citizen.ResultAsInteger())
+
+            -- if health below threshold or dead, make and show prompt
+            if (targetHealth < 80 or IsPedFatallyInjured(aimTarget)) then
+                -- make prompt
+                if (not Doctor.TargetPrompt) then
+                    local groupId = PromptGetGroupIdForTargetEntity(aimTarget)
+                    Doctor.TargetPrompt = Helpers.RegisterPrompt('Heal/Bandage', groupId)
+                end
+
+                -- handle prompt for healing/bandaging
+                Helpers.Prompt(Doctor.TargetPrompt, function()
+                    Helpers.Packet('doctor:TreatPlayer', { PatientId = GetPlayerServerId(playerHandle), Revive = IsPedFatallyInjured(aimTarget), Coords = targetCoords })
+                end)
             end
+        else
+            -- its a local
         end
-    end]]
+    else
+        if (Doctor.TargetPrompt ~= nil) then
+            Helpers.RemovePrompt(Doctor.TargetPrompt)
+            Doctor.TargetPrompt = nil
+        end            
+    end
 end
 
 function Doctor.HealPlayer()

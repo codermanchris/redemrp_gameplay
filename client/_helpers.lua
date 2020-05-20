@@ -41,7 +41,7 @@ function Helpers.AddBlip(blipSpriteType, coords, name)
 end
 
 -- Handle Prompts
-function Helpers.RegisterPrompt(text)
+function Helpers.RegisterPrompt(text, promptGroup)
 	local handle = PromptRegisterBegin()
 	PromptSetControlAction(handle, 0xE8342FF2)
 	PromptSetText(handle, CreateVarString(10, 'LITERAL_STRING', text))
@@ -50,8 +50,16 @@ function Helpers.RegisterPrompt(text)
 	PromptSetHoldMode(handle, true)
 	PromptRegisterEnd(handle)
 
+	if (promptGroup) then
+		PromptSetGroup(handle, promptGroup)
+	end
+
 	Helpers.Prompts[handle] = false
 	return handle	
+end
+
+function Helpers.RemovePrompt(handle)
+	PromptDelete(handle)
 end
 
 function Helpers.SetPromptActive(handle, value)
@@ -61,12 +69,12 @@ end
 
 function Helpers.Prompt(promptHandle, cb)
     -- if there is no active prompt, activate!
-    if (not Helpers.Prompts[promptHandle]) then
+	if (not Helpers.Prompts[promptHandle]) then
         Helpers.Prompts[promptHandle] = true
 		Helpers.SetPromptActive(promptHandle, true)
-    else
+	else
         -- did we complete prompt?
-        if (PromptHasHoldModeCompleted(promptHandle)) then
+		if (PromptHasHoldModeCompleted(promptHandle)) then
             Helpers.CancelPrompt(promptHandle)
             -- notify the caller! HELLO SIR WE HAVE A PROMPT COMPLETION!
             cb()
@@ -90,7 +98,7 @@ function Helpers.GetLocalPed()
 end
 
 -- Start a gameplay object that will initialize and tick
-function Helpers.StartGameplay(object)    
+function Helpers.StartGameplay(object)
     Citizen.CreateThread(function()
         object.Initialize()
         while true do

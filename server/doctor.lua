@@ -15,6 +15,9 @@ Helpers.PacketHandler('doctor:CheckIn', function(playerId, data)
     Doctor.CheckIn(playerId, data.LocationId)
 end)
 
+Helpers.PacketHandler('doctor:TreatPlayer', function(playerId, data)
+    Doctor.TreatPlayer(playerId, data.PatientId, data.Revive, data.Coords)
+end)
 
 -- redemrp_inventory useable item registrations
 RegisterServerEvent('RegisterUsableItem:Bandage')
@@ -119,6 +122,28 @@ function Doctor.BandagePlayer(playerId)
     end)
 end
 
+function Doctor.TreatPlayer(playerId, patientId, revive, coords)
+    -- give the doctor some xp
+    Helpers.GetCharacter(playerId, function(doctor)
+        doctor.addXP(5)
+        doctor.addMoney(1)
+
+        -- charge the patient a dollar
+        Helpers.GetCharacter(patientId, function(patient)
+            if (patient.getMoney() > 1) then
+                patient.removeMoney(1)
+            end
+        end)
+
+        -- notify doctor/patient the treatment happened
+        Helpers.Respond(playerId, '^2You have treated a person. You have earned $1.')
+        Helpers.Respond(patientId, '^2You have been treated by the doctor. If you could afford it, it cost you $1.')
+
+        -- treat the patient
+        Helpers.Packet(patientId, 'doctor:TreatPlayer', { Revive = revive, Coords = coords })        
+    end)
+end
+
 -- Payment Timer
 function Doctor.PayTimer()
     SetTimeout(60000*5, function()
@@ -126,9 +151,9 @@ function Doctor.PayTimer()
             if (v.DoctorId ~= nil) then
                 Helpers.GetCharacter(v.DoctorId, function(character)
                     character.addXP(5)
-                    character.addMoney(5)
+                    character.addMoney(3)
 
-                    Helpers.Respond(v.DoctorId, '^2You have been paid $5.00 for your work, Doctor.')
+                    Helpers.Respond(v.DoctorId, '^2You have been paid $3.00 and received 5 xp for your work, Doctor.')
                 end) 
             end
         end

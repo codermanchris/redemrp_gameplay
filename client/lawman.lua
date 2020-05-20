@@ -1,4 +1,4 @@
-Threads.Start(Lawman)
+Helpers.StartGameplay(Lawman)
 
 function Lawman.Initialize()
 end
@@ -23,4 +23,10 @@ function Lawman.Tick()
     else
         Lawman.HandleOffDuty(playerPed, playerCoords)
     end
+end
+
+function Lawman.HandleOnDuty(playerPed, playerCoords)
+end
+
+function Lawman.HandleOffDuty(playerPed, playerCoords)
 end
