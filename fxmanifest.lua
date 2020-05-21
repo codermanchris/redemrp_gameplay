@@ -30,9 +30,14 @@ client_scripts {
 ui_page 'client/ui/ui.html'
 files {
     'client/ui/ui.html',
+
+    -- css
     'client/ui/css/ui.css',
+
+    -- javascript
     'client/ui/js/config.js',
     'client/ui/js/core.js',
+    'client/ui/js/dialogs.js',
     'client/ui/js/bountyhunter.js',
     'client/ui/js/delivery.js',
     'client/ui/js/doctor.js',
@@ -40,4 +45,8 @@ files {
     'client/ui/js/hunter.js',
     'client/ui/js/lawman.js',
     'client/ui/js/moonshiner.js',
+
+    -- images
+    'client/ui/images/wanted.jpg',
+    'client/ui/images/woodpanels.jpg',
 }

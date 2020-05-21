@@ -41,9 +41,9 @@ function Helpers.AddBlip(blipSpriteType, coords, name)
 end
 
 -- Handle Prompts
-function Helpers.RegisterPrompt(text, promptGroup)
+function Helpers.RegisterPrompt(text, actionKey, promptGroup)
 	local handle = PromptRegisterBegin()
-	PromptSetControlAction(handle, 0xE8342FF2)
+	PromptSetControlAction(handle, actionKey) --0xE8342FF2)
 	PromptSetText(handle, CreateVarString(10, 'LITERAL_STRING', text))
 	PromptSetEnabled(handle, false)
 	PromptSetVisible(handle, false)
@@ -77,7 +77,7 @@ function Helpers.Prompt(promptHandle, cb)
 		if (PromptHasHoldModeCompleted(promptHandle)) then
             Helpers.CancelPrompt(promptHandle)
             -- notify the caller! HELLO SIR WE HAVE A PROMPT COMPLETION!
-            cb()
+			cb()
         end
     end
 end
@@ -115,6 +115,17 @@ function Helpers.IsActionKeyPressed()
 			return false
 		end
 		Helpers.NextActionAt = GetGameTimer() + 1000
+		return true
+	end
+	return false
+end
+
+function Helpers.IsControlPressed(controlId)
+	if (IsControlJustPressed(0, controlId)) then
+		if (Helpers.NextControlAt ~= nil and Helpers.NextControlAt > GetGameTimer()) then			
+			return false
+		end
+		Helpers.NextControlAt = GetGameTimer() + 1000
 		return true
 	end
 	return false
@@ -194,6 +205,28 @@ function Helpers.CloseUI(callNui)
 	end
 end
 
+function Helpers.MessageUI(target, method, data)
+	SendNUIMessage({ target = target, method = method, data = data })
+end
+
+function Helpers.LoadModel(model)
+    while not HasModelLoaded(model) do
+        RequestModel(model)        
+        Citizen.Wait(1)
+    end
+end
+
+function Helpers.SpawnNPC(hash, x, y, z)
+    local hash = GetHashKey(hash)
+    Helpers.LoadModel(hash)
+    local result = Citizen.InvokeNative(0xD49F9B0955C367DE, hash, x, y, z, 0, 0, 0, 0, Citizen.ResultAsInteger())
+    Citizen.InvokeNative(0x1794B4FCC84D812F, result, 1) -- SetEntityVisible
+    Citizen.InvokeNative(0x0DF7692B1D9E7BA7, result, 255, false) -- SetEntityAlpha
+    Citizen.InvokeNative(0x283978A15512B2FE, result, true) -- Invisible without
+    Citizen.InvokeNative(0x4AD96EF928BD4F9A, hash) -- SetModelAsNoLongerNeeded
+
+    return result
+end
 
 -- NUI Callbacks
 RegisterNUICallback('CloseMenu', function(data, cb)

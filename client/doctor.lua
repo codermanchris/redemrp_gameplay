@@ -52,10 +52,10 @@ end
 
 -- Setup the prompts used for this job
 function Doctor.SetupPrompts()
-    Doctor.CheckInPrompt = Helpers.RegisterPrompt('Check In')        
-    Doctor.BuyBandagePrompt = Helpers.RegisterPrompt('Buy Bandage (1$)')
-    Doctor.OnDutyPrompt = Helpers.RegisterPrompt('Go On Duty')
-    Doctor.OffDutyPrompt = Helpers.RegisterPrompt('Go Off Duty')
+    Doctor.CheckInPrompt = Helpers.RegisterPrompt('Check In', Controls.MultiplayerInfo, nil)        
+    Doctor.BuyBandagePrompt = Helpers.RegisterPrompt('Buy Bandage (1$)', Controls.MultiplayerInfo, nil)
+    Doctor.OnDutyPrompt = Helpers.RegisterPrompt('Go On Duty', Controls.MultiplayerInfo, nil)
+    Doctor.OffDutyPrompt = Helpers.RegisterPrompt('Go Off Duty', Controls.MultiplayerInfo, nil)
 end
 
 -- Clear all the prompts used for this job
