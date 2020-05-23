@@ -8,9 +8,9 @@ These jobs are a work in progress. If you want to see these jobs in action, we h
 ## 1. Features and Notes
 * Enable/disable any of the provided jobs in the config.
 * Jobs  
-  * Bounty Hunting **[INCOMPLETE]**
+  * Bounty Hunting **[IN DEVELOPMENT]**
   * Delivery **[INCOMPLETE]**
-  * Doctor **[IN DEVELOPMENT]**
+  * Doctor **[ALMOST DONE]**
   * Fisher **[INCOMPLETE]**
   * Hunter **[INCOMPLETE]**
   * Lawman **[INCOMPLETE]**
