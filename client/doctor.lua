@@ -52,7 +52,7 @@ end
 
 -- Setup the prompts used for this job
 function Doctor.SetupPrompts()
-    Doctor.CheckInPrompt = Helpers.RegisterPrompt('Check In', Controls.MultiplayerInfo, nil)        
+    Doctor.CheckInPrompt = Helpers.RegisterPrompt('Check In', Controls.MultiplayerInfo, nil)
     Doctor.BuyBandagePrompt = Helpers.RegisterPrompt('Buy Bandage (1$)', Controls.MultiplayerInfo, nil)
     Doctor.OnDutyPrompt = Helpers.RegisterPrompt('Go On Duty', Controls.MultiplayerInfo, nil)
     Doctor.OffDutyPrompt = Helpers.RegisterPrompt('Go Off Duty', Controls.MultiplayerInfo, nil)
@@ -209,7 +209,7 @@ function Doctor.HandleOnDuty(playerPed, playerCoords)
                 -- make prompt
                 if (not Doctor.TargetPrompt) then
                     local groupId = PromptGetGroupIdForTargetEntity(aimTarget)
-                    Doctor.TargetPrompt = Helpers.RegisterPrompt('Heal/Bandage', groupId)
+                    Doctor.TargetPrompt = Helpers.RegisterPrompt('Heal/Bandage', Controls.MultiplayerInfo, groupId)
                 end
 
                 -- handle prompt for healing/bandaging

@@ -31,7 +31,6 @@ function BountyHunter.GenerateBounties()
                 BountyHunter.CreateLocalBounty(k)
             end
         end
-
         BountyHunter.GenerateBounties()
     end)
 end
@@ -52,7 +51,6 @@ function BountyHunter.CreateLocalBounty(locationId)
 
     -- if we didn't find a bounty location then bounties are on cooldown for this location until one is available
     if (bountyLocation == nil) then
-        print('Waiting on cooldown timers. No bounty locations left for ' .. location.Name)
         return
     end
 
@@ -79,7 +77,7 @@ function BountyHunter.GetAvailableLocation(location)
     for k, v in pairs(location.BountyCoords) do
         if (GetGameTimer() > v.AvailableAt) then
             v.IsUsedBy = -1
-            v.AvailableAt = GetGameTimer() + 60000 * 60
+            v.AvailableAt = GetGameTimer() + BountyHunter.BountyCooldown
             return v
         end
     end
@@ -157,4 +155,7 @@ function BountyHunter.CompleteBounty(playerId)
         BountyHunter.Datas[playerId] = nil
         location.Bounties[bountyData.BountyId] = nil
     end)
+end
+
+function BountyHunter.OnPlayerDropped(playerId)
 end

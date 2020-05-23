@@ -6,6 +6,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 server_scripts {
     'config.lua',
     'server/_helpers.lua',
+    'server/players.lua',
     'server/bountyhunter.lua',
     'server/delivery.lua',
     'server/doctor.lua',
@@ -18,6 +19,7 @@ server_scripts {
 client_scripts {
     'config.lua',
     'client/_helpers.lua',
+    'client/localplayer.lua',
     'client/bountyhunter.lua',
     'client/delivery.lua',
     'client/doctor.lua',

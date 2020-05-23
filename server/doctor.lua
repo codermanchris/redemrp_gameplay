@@ -144,6 +144,10 @@ function Doctor.TreatPlayer(playerId, patientId, revive, coords)
     end)
 end
 
+function Doctor.OnPlayerDropped(playerId)
+    
+end
+
 -- Payment Timer
 function Doctor.PayTimer()
     SetTimeout(60000*5, function()

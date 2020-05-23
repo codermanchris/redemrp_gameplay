@@ -22,8 +22,16 @@ Helpers = {
     Prompts = {}
 }
 
+Players = {
+
+}
+
+LocalPlayer = {
+
+}
+
 BountyHunter = {
-    BountyGenerateWait = 60000*2,   -- how long it takes before generating another ai bounty
+    BountyGenerateWait = 5000, -- 60000*2,   -- how long it takes before generating another ai bounty
     BountyCooldown = 60000*60,      -- a BountyCoords can only be used this often
     MaxBounties = 8,                -- max amount of bounties available in any one town. (mostly ui constraint, need to add overflow scroller)
     Datas = {},                     -- store datas by player id for bounties
@@ -74,7 +82,34 @@ Fisher = {
 }
 
 Hunter = {
-    Locations = {}
+    PredatorHashes = {
+        'A_C_Coyote_01',
+        'A_C_Cougar_01',
+        'A_C_Bear_01'
+    },
+    PredatorRespawnRate = 60000 * 2,    -- every two minutes an animal will spawn
+    PredatorCount = 0,
+    TotalPredatorCount = 0,             -- used for ids 
+    Predators = {},
+    PredatorsBlips = {},
+    Hunters = {},
+    Locations = {
+        [1] = {
+            Id = 1,
+            Name = 'Emerald Ranch Hunter',
+            Coords = vector3(1421.42, 278.41, 89.58),
+            PredatorCoords = {
+                [1] = vector3(1504.05, 382.97, 91.31),
+                [2] = vector3(1490.7, 402.84, 92.39),
+                [3] = vector3(1466.94, 426.74, 91.94),
+                [4] = vector3(1432.85, 432.72, 92.76),
+                [5] = vector3(1402.35, 427.02, 88.92),
+                [6] = vector3(1363.5, 402.05, 90.5),
+                [7] = vector3(1316.66, 359.12, 86.37),
+                [8] = vector3(1328.97, 246.07, 86.94)
+            }
+        }
+    }
 }
 
 Lawman = {
@@ -82,8 +117,10 @@ Lawman = {
         [1] = {
             Id = 1,
             Name = 'Valentine Sheriff',
-            Coords = vector3(-275.16, 801.99, 119.41)
-        }
+            Coords = vector3(-276.07, 806.98, 119.38),
+            ArmoryCoords = vector3(-278.38, 805.19, 119.38),
+            DutyCoords = vector3(-278.53, 808.31, 119.38)
+        }        
     }
 }
 
@@ -95,8 +132,14 @@ Moonshiner = {
 Crimes =  {
     [1] = { Name = 'Murder', Reward = 50, XP = 25 },
     [2] = { Name = 'Attempted Murder', Reward = 10, XP = 15 },
-    [3] = { Name = 'Theft', Reward = 10, XP = 15 },
+    [3] = { Name = 'Street Robbery', Reward = 10, XP = 15 },
     [4] = { Name = 'Horse Theft', Reward = 25, XP = 15 },
+    [5] = { Name = 'Drunk and Disorderly', Reward = 5, XP = 15 },
+    [6] = { Name = 'Poaching', Reward = 10, XP = 15 },
+    [7] = { Name = 'Rape', Reward = 50, XP = 25 },
+    [8] = { Name = 'Escaped Prisoner', Reward = 15, XP = 20 },
+    [9] = { Name = 'Arson', Reward = 15, XP = 15 },
+    [10] = { Name = 'Rustling', Reward = 10, XP = 15 },
 }
 
 FirstNames = {

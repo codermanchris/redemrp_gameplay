@@ -29,7 +29,6 @@ function BountyHunter.SetupBlips()
             if (v.Blip ~= nil) then
                 RemoveBlip(v.Blip)
             end
-
             v.Blip = Helpers.AddBlip(BlipSpriteType.ProcBountyPoster, v.Coords, 'Bounty Board')
         end        
     end)
@@ -100,11 +99,11 @@ function BountyHunter.StartMission(bounty)
     BountyHunter.CurrentBounty.Location = BountyHunter.CurrentLocation
     BountyHunter.CurrentBounty.Coords = BountyHunter.Locations[bounty.LocationId].BountyCoords[bounty.BountyIndex].Coords
 
-    -- add last location blip
+    -- add location blip
     if (BountyHunter.CurrentBounty.Blip ~= nil) then
         RemoveBlip(BountyHunter.CurrentBounty.Blip)
     end
-    BountyHunter.CurrentBounty.Blip = Helpers.AddBlip(BlipSpriteType.AmbientBountyTarget, BountyHunter.CurrentBounty.Coords, 'Bounty Location')
+    BountyHunter.CurrentBounty.Blip = Helpers.AddBlip(BlipSpriteType.MissionAreaBounty, BountyHunter.CurrentBounty.Coords, 'Bounty Location')
 
     -- spawn npcs
     BountyHunter.SpawnMissionPeds()
@@ -114,6 +113,24 @@ function BountyHunter.HandleMission(playerPed, playerCoords)
     -- return if no active bounty
     if (BountyHunter.CurrentBounty == nil) then
         return
+    end
+
+    -- let's get distance to the ped and handle some things if close enough
+    local distanceToPed = Helpers.GetDistance(playerCoords, GetEntityCoords(BountyHunter.MissionPed, false))
+    if (distanceToPed < 50.0) then
+        -- we might have some prompts to deal with
+        BountyHunter.HandlePrompts(playerPed, playerCoords)
+
+        if (not BountyHunter.MissionPedAttacking) then
+            Citizen.InvokeNative(0x9222F300BF8354FE, BountyHunter.MissionPed, 55.0)
+            Citizen.InvokeNative(0x9222F300BF8354FE, BountyHunter.MissionPed, 55.0, 0)            
+            --RegisterHatedTargetsAroundPed(BountyHunter.MissionPed, 55.0)
+            --TaskCombatHatedTargetsAroundPed(BountyHunter.MissionPed, 55.0, 0)
+
+            BountyHunter.MissionPedAttacking = true
+        end
+    else
+        BountyHunter.MissionPedAttacking = false
     end
 
     -- let's try to drop off the bounty
@@ -154,6 +171,12 @@ function BountyHunter.SpawnMissionPeds()
     local coords = BountyHunter.CurrentBounty.Coords
     BountyHunter.MissionPed = Helpers.SpawnNPC('A_M_M_UniGunslinger_01', coords.x, coords.y, coords.z)
 
+    -- attach blip to ped
+    if (BountyHunter.MissionPedBlip) then
+        RemoveBlip(BountyHunter.MissionPedBlip)
+    end    
+    BountyHunter.MissionPedBlip = Citizen.InvokeNative(0x23f74c2fda6e7c61, 953018525, BountyHunter.MissionPed)
+
     -- make this guy hate the player
     SetRelationshipBetweenGroups(5, 'A_M_M_UniGunslinger_01', 'PLAYER')
 
@@ -162,16 +185,18 @@ function BountyHunter.SpawnMissionPeds()
         GiveWeaponToPed_2(BountyHunter.MissionPed, WeaponHashes.RepeaterCarbine, 1, true, true, GetWeapontypeGroup(WeaponGroups.Repeater), true, 0.5, 1.0, 0, true, 0, 0)
     end
 
-    -- set ped stuffs    
+    --[[ set ped stuffs    
     SetPedCombatAttributes(BountyHunter.MissionPed, 16, 1)
     SetPedCombatAttributes(BountyHunter.MissionPed, 17, 0)
     SetPedCombatAttributes(BountyHunter.MissionPed, 46, 1)
     SetPedCombatAttributes(BountyHunter.MissionPed, 1424, 0)
-    SetPedCombatAttributes(BountyHunter.MissionPed, 5, 1)
+    SetPedCombatAttributes(BountyHunter.MissionPed, 5, 1)]]
     
     -- make ped register their hated targets (the players) and attack
-    RegisterHatedTargetsAroundPed(BountyHunter.MissionPed, 500.0)
-    TaskCombatHatedTargetsAroundPed(BountyHunter.MissionPed, 500.0, 0)
+    Citizen.InvokeNative(0x9222F300BF8354FE, BountyHunter.MissionPed, 500.0)
+    Citizen.InvokeNative(0x9222F300BF8354FE, BountyHunter.MissionPed, 500.0, 0)
+    --RegisterHatedTargetsAroundPed(BountyHunter.MissionPed, 500.0)
+    --TaskCombatHatedTargetsAroundPed(BountyHunter.MissionPed, 500.0, 0)
 end
 
 function BountyHunter.CompleteMission()
@@ -180,6 +205,53 @@ function BountyHunter.CompleteMission()
     end
 
     DeleteEntity(BountyHunter.MissionPed)
+    
+    if (BountyHunter.MissionPedBlip) then
+        RemoveBlip(BountyHunter.MissionPedBlip)
+    end
 
     BountyHunter.CurrentBounty = nil
+end
+
+function BountyHunter.HandlePrompts(playerPed, playerCoords)
+    -- get aiming target
+    local isAiming, aimTarget = GetEntityPlayerIsFreeAimingAt(PlayerId())
+    if (isAiming and DoesEntityExist(aimTarget)) then                
+        -- make prompts
+        if (not BountyHunter.CuffPrompt) then
+            local groupId = PromptGetGroupIdForTargetEntity(aimTarget)
+            BountyHunter.CuffPrompt = Helpers.RegisterPrompt('Cuff/Uncuff', Controls.Enter, groupId)
+            BountyHunter.HogtiePrompt = Helpers.RegisterPrompt('Hogtie/Untie', Controls.Loot, groupId)
+        end
+
+        -- get aiming handle and make sure its a player
+        local targetPlayerId = NetworkGetPlayerIndexFromPed(aimTarget)    
+        local isNetworkPlayer = NetworkIsPlayerActive(targetPlayerId)
+        -- handle prompt for cuffing
+        Helpers.Prompt(BountyHunter.CuffPrompt, function()
+            print('cuff person')
+
+            if (isNetworkPlayer) then
+                -- notify server to cuff/uncuff this person
+                Helpers.Packet('player:Cuff', { TargetId = targetPlayerId })
+            end
+        end)
+
+        -- handle prompt for cuffing
+        Helpers.Prompt(BountyHunter.HogtiePrompt, function()
+            print('hogtie person')
+
+            if (isNetworkPlayer) then
+                -- notify server to hogtie/untie this person
+                Helpers.Packet('player:Hogtie', { TargetId = targetPlayerId })
+            end
+        end)
+    else
+        if (BountyHunter.CuffPrompt ~= nil) then
+            Helpers.RemovePrompt(BountyHunter.CuffPrompt)
+            Helpers.RemovePrompt(BountyHunter.HogtiePrompt)
+            BountyHunter.CuffPrompt = nil
+            BountyHunter.HogtiePrompt = nil
+        end            
+    end
 end
