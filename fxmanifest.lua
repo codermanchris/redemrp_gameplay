@@ -31,6 +31,10 @@ client_scripts {
 
 ui_page 'client/ui/ui.html'
 files {
+    -- 3rd party
+    'client/ui/js/3rdParty/radialprogress.js',
+
+    -- redemrp_gameplay
     'client/ui/ui.html',
 
     -- css

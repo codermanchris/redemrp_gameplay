@@ -87,11 +87,10 @@ Hunter = {
         'A_C_Cougar_01',
         'A_C_Bear_01'
     },
-    PredatorRespawnRate = 60000 * 2,    -- every two minutes an animal will spawn
+    PredatorRespawnRate = 60000,    -- every two minutes an animal will spawn
     PredatorCount = 0,
     TotalPredatorCount = 0,             -- used for ids 
     Predators = {},
-    PredatorsBlips = {},
     Hunters = {},
     Locations = {
         [1] = {

@@ -114,6 +114,13 @@ function Hunter.HandlePredators(playerPed, playerCoords)
     -- figure out if our predators have been killed yet
     for k, v in pairs(Hunter.Predators) do
         if (IsPedFatallyInjured(v.Ped) and not v.IsDead) then
+            -- remove the blip
+            RemoveBlip(v.Blip)
+
+            -- decrease the predator count
+            Hunter.PredatorCount = math.clamp(Hunter.PredatorCount - 1, 0, 5)
+
+            -- mark this entity as dead until it's removed from 
             v.IsDead = true
 
             -- get killer information and notify server
@@ -121,25 +128,29 @@ function Hunter.HandlePredators(playerPed, playerCoords)
             local causeOfDeath = GetPedCauseOfDeath(v.Ped)
             local killerIndex = NetworkGetPlayerIndexFromPed(v.Ped)
 
+            -- if we killed this predator, we should get rewarded
             if (killerPed == PlayerPedId()) then
                 Helpers.Packet('hunter:GotKill', { AnimalId = v.AnimalId })
-                Hunter.PredatorCount = Hunter.PredatorCount - 1
-
-                RemoveBlip(v.Blip)
             end
         end
     end
 end
 
 function Hunter.SpawnPredator(coords)
-    Hunter.PredatorCount = Hunter.PredatorCount + 1
-    Hunter.TotalPredatorCount = Hunter.TotalPredatorCount + 1    
+    -- increase count and get new id (totalpredatorcount)
+    Hunter.PredatorCount = math.clamp(Hunter.PredatorCount + 1, 0, 5)
+    Hunter.TotalPredatorCount = Hunter.TotalPredatorCount + 1
 
+    -- predator data
     local data = {}
     data.AnimalId = math.random(1, 3)
     data.Ped = Helpers.SpawnNPC(Hunter.PredatorHashes[data.AnimalId], coords.x, coords.y, coords.z)
     data.IsDead = false
     data.Blip = Citizen.InvokeNative(0x23F74C2FDA6E7C61, 953018525, data.Ped)
 
+    -- set in list
     Hunter.Predators[Hunter.TotalPredatorCount] = data    
+
+    -- make predator hunt player
+    Citizen.InvokeNative(0xF166E48407BAC484, data.Ped, PlayerPedId(), 0, 0)
 end
