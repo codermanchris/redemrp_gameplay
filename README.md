@@ -12,7 +12,7 @@ These jobs are a work in progress. If you want to see these jobs in action, we h
   * Delivery **[INCOMPLETE]**
   * Doctor **[ALMOST DONE]**
   * Fisher **[INCOMPLETE]**
-  * Hunter **[INCOMPLETE]**
+  * Hunter **[ALMOST DONE]**
   * Lawman **[INCOMPLETE]**
   * Moonshiner **[INCOMPLETE]**
    
