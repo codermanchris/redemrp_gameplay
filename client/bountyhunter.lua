@@ -122,10 +122,8 @@ function BountyHunter.HandleMission(playerPed, playerCoords)
         BountyHunter.HandlePrompts(playerPed, playerCoords)
 
         if (not BountyHunter.MissionPedAttacking) then
-            Citizen.InvokeNative(0x9222F300BF8354FE, BountyHunter.MissionPed, 55.0)
-            Citizen.InvokeNative(0x9222F300BF8354FE, BountyHunter.MissionPed, 55.0, 0)            
-            --RegisterHatedTargetsAroundPed(BountyHunter.MissionPed, 55.0)
-            --TaskCombatHatedTargetsAroundPed(BountyHunter.MissionPed, 55.0, 0)
+            -- make bounty attack player
+            Citizen.InvokeNative(0xF166E48407BAC484, BountyHunter.MissionPed, PlayerPedId(), 0, 0)
 
             BountyHunter.MissionPedAttacking = true
         end
@@ -184,19 +182,6 @@ function BountyHunter.SpawnMissionPeds()
     if (math.random(1, 100) > 80) then
         GiveWeaponToPed_2(BountyHunter.MissionPed, WeaponHashes.RepeaterCarbine, 1, true, true, GetWeapontypeGroup(WeaponGroups.Repeater), true, 0.5, 1.0, 0, true, 0, 0)
     end
-
-    --[[ set ped stuffs    
-    SetPedCombatAttributes(BountyHunter.MissionPed, 16, 1)
-    SetPedCombatAttributes(BountyHunter.MissionPed, 17, 0)
-    SetPedCombatAttributes(BountyHunter.MissionPed, 46, 1)
-    SetPedCombatAttributes(BountyHunter.MissionPed, 1424, 0)
-    SetPedCombatAttributes(BountyHunter.MissionPed, 5, 1)]]
-    
-    -- make ped register their hated targets (the players) and attack
-    Citizen.InvokeNative(0x9222F300BF8354FE, BountyHunter.MissionPed, 500.0)
-    Citizen.InvokeNative(0x9222F300BF8354FE, BountyHunter.MissionPed, 500.0, 0)
-    --RegisterHatedTargetsAroundPed(BountyHunter.MissionPed, 500.0)
-    --TaskCombatHatedTargetsAroundPed(BountyHunter.MissionPed, 500.0, 0)
 end
 
 function BountyHunter.CompleteMission()

@@ -58,6 +58,8 @@ function Hunter.SetDuty(value)
     else
         Hunter.CurrentDutyLocation = nil
         Hunter.NextPredatorSpawn = nil
+
+        Hunter.ClearPredators()
     end
 end
 
@@ -153,4 +155,12 @@ function Hunter.SpawnPredator(coords)
 
     -- make predator hunt player
     Citizen.InvokeNative(0xF166E48407BAC484, data.Ped, PlayerPedId(), 0, 0)
+end
+
+function Hunter.ClearPredators()
+    for k, v in pairs(Hunter.Predators) do
+        ClearPedTasksImmediately(v.Ped)
+        RemoveBlip(v.Blip)
+        v = nil
+    end
 end

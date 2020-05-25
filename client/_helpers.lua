@@ -67,6 +67,14 @@ function Helpers.SetPromptActive(handle, value)
 	PromptSetVisible(handle, value)
 end
 
+function Helpers.HandlePrompt(distance, promptHandle, cb)
+    if (distance < 1.0) then
+        Helpers.Prompt(promptHandle, cb)
+    elseif (distance > 1.5) then
+        Helpers.CancelPrompt(promptHandle)
+    end
+end
+
 function Helpers.Prompt(promptHandle, cb)
     -- if there is no active prompt, activate!
 	if (not Helpers.Prompts[promptHandle]) then

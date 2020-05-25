@@ -84,7 +84,7 @@ function Doctor.Tick()
     -- get closest doctor location
     -- if it's too far away, just return
     Doctor.Closest = Helpers.GetClosestLocation(playerCoords, Doctor.Locations)
-    if (Doctor.Closest.Distance > 25.0) then
+    if (Doctor.Closest.Distance > 250.0) then
         Doctor.ClearPrompts()
 
         -- if the player was on duty, they will go off duty

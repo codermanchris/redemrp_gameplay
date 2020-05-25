@@ -31,7 +31,7 @@ LocalPlayer = {
 }
 
 BountyHunter = {
-    BountyGenerateWait = 5000, -- 60000*2,   -- how long it takes before generating another ai bounty
+    BountyGenerateWait = 60000*2,   -- how long it takes before generating another ai bounty
     BountyCooldown = 60000*60,      -- a BountyCoords can only be used this often
     MaxBounties = 8,                -- max amount of bounties available in any one town. (mostly ui constraint, need to add overflow scroller)
     Datas = {},                     -- store datas by player id for bounties
@@ -55,6 +55,25 @@ BountyHunter = {
                 [6] = { Id = 6, Coords = vector3(-1101.72, 706.69, 104.17) },
                 [7] = { Id = 7, Coords = vector3(-819.21, 342.3, 96.74) },
                 [8] = { Id = 8, Coords = vector3(-600.11, 519.17, 97.13) },
+            }
+        },
+        [2] = {
+            Id = 2,
+            Name = 'Strawberry Valentine Board',
+            Coords = vector3(-1804.19, -348.31, 164.19),
+            DropOffCoords = vector3(-1804.07, -352.32, 164.13),
+            BountyCount = 0,
+            TotalBountyCount = 0,
+            Bounties = {},
+            BountyCoords = {
+                [1] = { Id = 1, Coords = vector3(-1723.66, -87.87, 181.71) },
+                [2] = { Id = 2, Coords = vector3(-1627.13, -877.45, 90.03) },
+                [3] = { Id = 3, Coords = vector3(-1505.48, -792.64, 104.47) },
+                [4] = { Id = 4, Coords = vector3(-2577.87, -1386.72, 149.28) },
+                [5] = { Id = 5, Coords = vector3(-1984.28, -1631.62, 118.1) },
+                [6] = { Id = 6, Coords = vector3(-1975.36, -1663.46, 117.92) },
+                [7] = { Id = 7, Coords = vector3(-1861.34, -1722.44, 109.25) },
+                [8] = { Id = 8, Coords = vector3(-861.57, -744.79, 56.97) },
             }
         }
     }
@@ -119,7 +138,14 @@ Lawman = {
             Coords = vector3(-276.07, 806.98, 119.38),
             ArmoryCoords = vector3(-278.38, 805.19, 119.38),
             DutyCoords = vector3(-278.53, 808.31, 119.38)
-        }        
+        },
+        [2] = {
+            Id = 2,
+            Name = 'Strawberry Sheriff',
+            Coords = vector3(-1809.3, -351.01, 164.66),
+            ArmoryCoords = vector3(-1813.96, -354.83, 164.65),
+            DutyCoords = vector3(-1808.56, -347.57, 164.66)
+        }
     }
 }
 
