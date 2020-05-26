@@ -4,6 +4,11 @@ if (GameplayConfig.UseLawman) then
 end
 
 -- Packet Handlers
+Helpers.PacketHandler('lawman:SetDuty', function(data)
+    Lawman.IsOnDuty = data.Value
+    Helpers.CancelPrompt(Lawman.OnDutyPrompt)
+    Helpers.CancelPrompt(Lawman.OffDutyPrompt)
+end)
 
 -- Class Functions
 function Lawman.Initialize()
@@ -52,58 +57,39 @@ end
 
 function Lawman.HandleOnDuty(playerPed, playerCoords)
     -- handle prompts
-    Lawman.HandlePrompts(playerPed, playerCoords)
+    Lawman.ProcessPrompts(playerPed, playerCoords)
 
     -- we're at a sheriff's office
     if (Lawman.Closest.Distance < 25.0) then
-        local distanceToArmory = Helpers.GetDistance(playerCoords, Lawman.ClosestLocation.ArmoryCoords)
-        if (distanceToArmory < 5.0) then
-            -- draw marker for armory
-            Helpers.DrawMarker(Lawman.ClosestLocation.ArmoryCoords, Colors.Marker)
-
-            -- if we're close enough to handle some promptness, do it
-            if (distanceToArmory < 1.0) then
-                -- handle prompt for armory
-                Helpers.Prompt(Lawman.ArmoryPrompt, function()
-                    print('access armory person')
-
-                    -- notify server to cuff/uncuff this person
-                    Helpers.Packet('lawman:GetArmory', { TargetId = targetPlayerId })
-                end)
-            else
-                -- clear armory prompt
-                if (distanceToArmory > 1.5) then
-                    if (Lawman.ArmoryPrompt ~= nil) then
-                        Helpers.RemovePrompt(Lawman.ArmoryPrompt)
-                        Lawman.ArmoryPrompt = nil
-                    end  
-                end
-            end
-        end        
+        Lawman.ProcessOffDutyMarker(playerCoords)
+        Lawman.ProcessArmoryMarker(playerCoords)   
     end
 end
 
+-- Off Duty Handling
 function Lawman.HandleOffDuty(playerPed, playerCoords)
     if (Lawman.Closest.Distance > 25.0) then
         return
     end
 
-    -- draw duty marker
-    local distanceToDuty = Helpers.GetDistance(playerCoords, Lawman.ClosestLocation.DutyCoords)
-    if (distanceToDuty < 5.0) then
+    Lawman.ProcessOnDutyMarker(playerCoords)
+end
+
+function Lawman.ProcessOnDutyMarker(playerCoords)
+    local distance = Helpers.GetDistance(playerCoords, Lawman.ClosestLocation.DutyCoords)
+    if (distance < 5.0) then
         Helpers.DrawMarker(Lawman.ClosestLocation.DutyCoords, Colors.Marker)
 
         -- if we're close enough to handle some promptness, do it
-        if (distanceToDuty < 1.0) then
+        if (distance < 1.0) then
             Lawman.HasDutyPrompt = true
-            -- handle prompt for duty
+            -- process prompt and request duty from server
             Helpers.Prompt(Lawman.OnDutyPrompt, function()
-                -- ask the server to go on duty
                 Helpers.Packet('lawman:GoOnDuty', { LocationId = Lawman.ClosestLocation.Id })
             end)
         else
             -- clear duty prompt
-            if (distanceToDuty > 1.5 and Lawman.HasDutyPrompt) then                
+            if (distance > 1.5 and Lawman.HasDutyPrompt) then                
                 Lawman.HasDutyPrompt = false
                 Helpers.CancelPrompt(Lawman.OnDutyPrompt)
             end
@@ -111,7 +97,55 @@ function Lawman.HandleOffDuty(playerPed, playerCoords)
     end
 end
 
-function Lawman.HandlePrompts(playerPed, playerCoords)
+function Lawman.ProcessOffDutyMarker(playerCoords)
+    local distance = Helpers.GetDistance(playerCoords, Lawman.ClosestLocation.DutyCoords)
+    if (distance < 5.0) then
+        -- draw marker for armory
+        Helpers.DrawMarker(Lawman.ClosestLocation.DutyCoords, Colors.Marker)
+
+        -- if we're close enough to handle some promptness, do it
+        if (distance < 1.0) then
+            Lawman.HasOffDutyPrompt = true
+
+            -- process prompt and request armory from server
+            Helpers.Prompt(Lawman.OffDutyPrompt, function()
+                Helpers.Packet('lawman:GoOffDuty', { LocationId = Lawman.ClosestLocation.Id })
+            end)
+        else
+            -- clear armory prompt
+            if (distance > 1.5 and Lawman.HasOffDutyPrompt) then
+                Lawman.HasOffDutyPrompt = false
+                Helpers.CancelPrompt(Lawman.OffDutyPrompt)                    
+            end
+        end
+    end
+end
+
+function Lawman.ProcessArmoryMarker(playerCoords)
+    local distance = Helpers.GetDistance(playerCoords, Lawman.ClosestLocation.ArmoryCoords)
+    if (distance < 5.0) then
+        -- draw marker for armory
+        Helpers.DrawMarker(Lawman.ClosestLocation.ArmoryCoords, Colors.Marker)
+
+        -- if we're close enough to handle some promptness, do it
+        if (distance < 1.0) then
+            Lawman.HasArmoryPrompt = true
+
+            -- process prompt and request armory from server
+            Helpers.Prompt(Lawman.ArmoryPrompt, function()
+                Helpers.Packet('lawman:GetArmory', { TargetId = targetPlayerId })
+            end)
+        else
+            -- clear armory prompt
+            if (distance > 1.5 and Lawman.HasArmoryPrompt) then
+                Lawman.HasArmoryPrompt = false
+                Helpers.CancelPrompt(Lawman.ArmoryPrompt)                    
+            end
+        end
+    end
+end
+
+function Lawman.ProcessPrompts(playerPed, playerCoords)
     -- get aiming target
     local isAiming, aimTarget = GetEntityPlayerIsFreeAimingAt(PlayerId())
     if (isAiming and DoesEntityExist(aimTarget)) then                
@@ -130,8 +164,6 @@ function Lawman.HandlePrompts(playerPed, playerCoords)
             
             -- handle prompt for cuffing
             Helpers.Prompt(Lawman.CuffPrompt, function()
-                print('cuff person')
-
                 -- notify server to cuff/uncuff this person
                 Helpers.Packet('lawman:Cuff', { TargetId = targetPlayerId })
             end)

@@ -85,8 +85,14 @@ function Doctor.BuyBandage(playerId)
         end
 
         character.removeMoney(1)
-        TriggerEvent("item:add", playerId, {'Bandage', 1, 1}, character.getIdentifier(), character.getSessionVar("charid"))
-        TriggerClientEvent('gui:ReloadMenu', playerId)
+
+        -- get inventory data and add item
+        Helpers.GetInventory(function(inventory)
+            inventory.addItem(playerId, 'Bandage', 1, 1)
+        end)
+
+        --TriggerEvent("item:add", playerId, {'Bandage', 1, 1}, character.getIdentifier(), character.getSessionVar("charid"))
+        --TriggerClientEvent('gui:ReloadMenu', playerId)
 
         Helpers.Respond(playerId, '^2You purchased a Bandage for $1.00.')
     end)

@@ -59,7 +59,7 @@ BountyHunter = {
         },
         [2] = {
             Id = 2,
-            Name = 'Strawberry Valentine Board',
+            Name = 'Strawberry Bounty Board',
             Coords = vector3(-1804.19, -348.31, 164.19),
             DropOffCoords = vector3(-1804.07, -352.32, 164.13),
             BountyCount = 0,
@@ -74,6 +74,25 @@ BountyHunter = {
                 [6] = { Id = 6, Coords = vector3(-1975.36, -1663.46, 117.92) },
                 [7] = { Id = 7, Coords = vector3(-1861.34, -1722.44, 109.25) },
                 [8] = { Id = 8, Coords = vector3(-861.57, -744.79, 56.97) },
+            }
+        },
+        [3] = {
+            Id = 2,
+            Name = 'Tumbleweed Bounty Board',
+            Coords = vector3(-5529.07, -2945.41, -1.56),
+            DropOffCoords = vector3(-5526.54, -2933.56, -1.97),
+            BountyCount = 0,
+            TotalBountyCount = 0,
+            Bounties = {},
+            BountyCoords = {
+                [1] = { Id = 1, Coords = vector3(-5859.58, -3185.88, -13.33) },
+                [2] = { Id = 2, Coords = vector3(-5848.25, -3742.65, -24.91) },
+                [3] = { Id = 3, Coords = vector3(-5423.31, -3653.35, -22.05) },
+                [4] = { Id = 4, Coords = vector3(-4793.57, -2723.46, -13.81) },
+                [5] = { Id = 5, Coords = vector3(-4834.16, -2679.01, -12.7) },
+                [6] = { Id = 6, Coords = vector3(-5574.86, -2582.97, -8.28) },
+                [7] = { Id = 7, Coords = vector3(-5556.17, -2395.91, -9.02) },
+                [8] = { Id = 8, Coords = vector3(-5949.21, -3263.14, -21.68) },
             }
         }
     }
@@ -131,6 +150,44 @@ Hunter = {
 }
 
 Lawman = {
+    Armory = {
+        [1] = { 
+            Id =  1,
+            Name = 'Knife',
+            WeaponHash = GetHashKey('WEAPON_MELEE_KNIFE'),
+            Ammo = 1
+        },
+        [2] = { 
+            Id =  2,
+            Name = 'Lantern',
+            WeaponHash = GetHashKey('WEAPON_MELEE_LANTERN_ELECTRIC'),
+            Ammo = 1
+        },        
+        [3] = { 
+            Id =  3,
+            Name = 'Lasso',
+            WeaponHash = GetHashKey('WEAPON_LASSO'),
+            Ammo = 1
+        },
+        [4] = { 
+            Id =  4,
+            Name = 'Pump Shotgun',
+            WeaponHash = GetHashKey('WEAPON_SHOTGUN_PUMP'),
+            Ammo = 50
+        },
+        [5] = { 
+            Id =  5,
+            Name = 'Pistol',
+            WeaponHash = GetHashKey('WEAPON_PISTOL_SEMIAUTO'),
+            Ammo = 100
+        },
+        [6] = { 
+            Id =  6,
+            Name = 'Rolling Block',
+            WeaponHash = GetHashKey('WEAPON_SNIPERRIFLE_ROLLINGBLOCK_EXOTIC'),
+            Ammo = 100
+        }
+    },
     Locations = {
         [1] = {
             Id = 1,
@@ -145,6 +202,13 @@ Lawman = {
             Coords = vector3(-1809.3, -351.01, 164.66),
             ArmoryCoords = vector3(-1813.96, -354.83, 164.65),
             DutyCoords = vector3(-1808.56, -347.57, 164.66)
+        },
+        [3] = {
+            Id = 3,
+            Name = 'Tumbleweed Sheriff',
+            Coords = vector3(-5531.41, -2928.63, -1.36),
+            ArmoryCoords = vector3(-5526.66, -2928.32, -1.36),
+            DutyCoords = vector3(-5531.41, -2928.63, -1.36)
         }
     }
 }

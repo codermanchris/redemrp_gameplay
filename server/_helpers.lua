@@ -31,6 +31,11 @@ function Helpers.PacketHandler(packetName, callback)
 end
 -- End Packet Handler
 
+function Helpers.GetInventory(cb)
+	TriggerEvent("redemrp_inventory:getData", function(data)
+    	cb(data)
+	end)
+end
 
 function Helpers.IsPlayerIdValid(source, playerId)
 	if (tonumber(source) == nil or source == 65535 or source == -1 or playerId ~= source) then

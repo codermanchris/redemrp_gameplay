@@ -227,7 +227,7 @@ end
 function Helpers.SpawnNPC(hash, x, y, z)
     local hash = GetHashKey(hash)
     Helpers.LoadModel(hash)
-    local result = Citizen.InvokeNative(0xD49F9B0955C367DE, hash, x, y, z, 0, 0, 0, 0, Citizen.ResultAsInteger())
+    local result = Citizen.InvokeNative(0xD49F9B0955C367DE, hash, x, y, z, 0, 1, 1, 0, Citizen.ResultAsInteger())
     Citizen.InvokeNative(0x1794B4FCC84D812F, result, 1) -- SetEntityVisible
     Citizen.InvokeNative(0x0DF7692B1D9E7BA7, result, 255, false) -- SetEntityAlpha
     Citizen.InvokeNative(0x283978A15512B2FE, result, true) -- Invisible without
