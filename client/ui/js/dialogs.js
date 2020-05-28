@@ -54,5 +54,40 @@ var dialogs = {
             this.callback(false);
             this.close();
         }
+    },
+
+    quantity: {
+        $dialog: null,
+        $title: null,
+        $message: null,
+        callback: null,
+
+        init: function() {
+            this.$dialog = $("#quantityDialog");
+            this.$title = $("#quantityDialog .title");
+            this.$message = $("#quantityDialog .message");
+        },
+        show: function(title, message, cb) {
+            this.callback = cb;
+
+            this.$title.html(title);
+            this.$message.html(message);            
+        },
+        close: function() {
+            this.$title.html("");
+            this.$message.html("");             
+            this.$dialog.hide();
+            this.callback = null;
+        },
+        accept: function() {
+            var amount = $("#quantityAmount").val();
+            if (!parseInt(amount)) {
+                amount = 0;
+            }
+            this.callback(true, amount);
+        },
+        cancel: function() {
+            this.callback(false, 0);
+        }
     }
 }

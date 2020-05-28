@@ -1,7 +1,7 @@
 Helpers.StartGameplay(LocalPlayer)
 
 function LocalPlayer.Initialize()
-    
+    LocalPlayer.NextBonusAt = GetGameTimer()
 end
 
 function LocalPlayer.Tick()
@@ -17,16 +17,26 @@ function LocalPlayer.Tick()
     end
 
     -- if the player is restrained, handle it
-    if (LocalPlayer.IsRestrained) then
+    if (LocalPlayer.IsCuffed or LocalPlayer.IsHogtied) then
         LocalPlayer.HandleRestrained(playerPed, playerCoords)
     end
 
     -- handle prompts
-    LocalPlayer.HandlePrompts()
+    LocalPlayer.HandlePrompts(playerPed, playerCoords)
+
+    -- handle bonus xp
+    LocalPlayer.HandleBonusXP()
 end
 
+function LocalPlayer.HandleBonusXP()
+    if (LocalPlayer.NextBonusAt < GetGameTimer()) then
+        LocalPlayer.NextBonusAt = GetGameTimer() + (60000 * 2)
 
-function LocalPlayer.HandlePrompts()
+        Helpers.Packet('player:BonusXP')
+    end
+end
+
+function LocalPlayer.HandlePrompts(playerPed, playerCoords)
     -- get aiming target
     local isAiming, aimTarget = GetEntityPlayerIsFreeAimingAt(PlayerId())
     if (isAiming and DoesEntityExist(aimTarget)) then                
@@ -37,18 +47,25 @@ function LocalPlayer.HandlePrompts()
             local targetPed = GetPlayerPed(targetPlayerId)
             local targetCoords = GetEntityCoords(targetPed)
 
-            -- make prompt
-            if (not LocalPlayer.GiveMoneyPrompt) then
-                local groupId = PromptGetGroupIdForTargetEntity(aimTarget)
-                LocalPlayer.GiveMoneyPrompt = Helpers.RegisterPrompt('Give Money', Controls.MultiplayerInfo, groupId)
-            end
+            -- if we're standing close enough, do it
+            if (Helpers.GetDistance(playerCoords, targetCoords) < 5.0) then
+                -- make prompt
+                if (not LocalPlayer.GiveMoneyPrompt) then
+                    local groupId = PromptGetGroupIdForTargetEntity(aimTarget)
+                    LocalPlayer.GiveMoneyPrompt = Helpers.RegisterPrompt('Give Money', Controls.MultiplayerInfo, groupId)
+                end
 
-            -- handle prompt for paying
-            Helpers.Prompt(LocalPlayer.GiveMoneyPrompt, function()
-                -- open ui to get amount
-                Helpers.OpenUI('givemoney', nil)
-                LocalPlayer.GiveMoneyTargetId = targetPlayerId
-            end)
+                -- handle prompt for paying
+                Helpers.Prompt(LocalPlayer.GiveMoneyPrompt, function()
+                    -- open ui to get amount
+                    --Helpers.OpenUI('givemoney', nil)
+                    
+                    LocalPlayer.GiveMoneyTargetId = targetPlayerId
+
+                    -- for testing
+                    LocalPlayer.GiveMoney(1)
+                end)
+            end
         else
             -- its a local
         end
@@ -75,25 +92,45 @@ function LocalPlayer.GiveMoney(amount)
 end
 
 function LocalPlayer.HandleRestrained(playerPed, playerCoords)
-    DisableControlAction(0, 0xB2F377E8, true) -- attack
-    DisableControlAction(0, 0xC1989F95, true) -- attack 2
-    DisableControlAction(0, 0x07CE1E61, true) -- melee attack
-    DisableControlAction(0, 0xF84FA74F, true) -- mouse 2
-    DisableControlAction(0, 0xCEE12B50, true) -- mouse 3
-    DisableControlAction(0, 0x8FFC75D6, true) -- shift
-    DisableControlAction(0, 0xD9D0E1C0, true) -- space
-    DisableControlAction(0, 0xCEFD9220, true) -- e
-    DisableControlAction(0, 0xF3830D8E, true) -- j
-    DisableControlAction(0, 0x80F28E95, true) -- l
-    DisableControlAction(0, 0xDB096B85, true) -- ctrl
-    DisableControlAction(0, 0xE30CD707, true) -- r
+    DisableControlAction(0, Controls.MeleeAttack, true)
+    DisableControlAction(0, Controls.QuickUseItem, true)
+    DisableControlAction(0, Controls.Attack, true)
+    DisableControlAction(0, Controls.Aim, true)
+    DisableControlAction(0, Controls.SpecialAbility, true)
+    DisableControlAction(0, Controls.Sprint, true)
+    DisableControlAction(0, Controls.Jump, true)
+    DisableControlAction(0, Controls.Enter, true)
+    DisableControlAction(0, Controls.OpenJournal, true)
+    DisableControlAction(0, Controls.PlayerMenu, true)
+    DisableControlAction(0, Controls.Duck, true)
+    DisableControlAction(0, Controls.Reload, true)
 end
 
-function LocalPlayer.Cuff()
+function LocalPlayer.ToggleCuffs()
     LocalPlayer = not LocalPlayer.IsCuffed
 
     if (LocalPlayer.IsCuffed) then
 
+    else
+
+    end
+end
+
+function LocalPlayer.ToggleAnkleRestraints()
+    LocalPlayer = not LocalPlayer.IsAnklesRestrained
+
+    if (LocalPlayer.IsAnklesRestrained) then
+        
+    else
+
+    end
+end
+
+function LocalPlayer.ToggleHogtied()
+    LocalPlayer = not LocalPlayer.IsHogtied
+
+    if (LocalPlayer.IsHogtied) then
+        
     else
 
     end

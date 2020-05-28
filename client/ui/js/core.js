@@ -98,7 +98,7 @@ var core = {
                 core.startProgressBar();
             } else {
                 // we have to do this to let the animation of the progress bar finish 
-                setTimeout(core.hideProgressBar, 3000);
+                setTimeout(core.hideProgressBar, 500);
             }
         }, 1000);
     },

@@ -108,6 +108,10 @@
     height: 60px;
 }
 
+#quantityDialog {
+    display: none;
+}
+
 #progressBar {
     position:absolute;
     width:80px;

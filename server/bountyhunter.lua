@@ -56,13 +56,13 @@ function BountyHunter.CreateLocalBounty(locationId)
 
     -- increase our bounty counter 
     location.BountyCount = location.BountyCount + 1
-    location.TotalBountyCount = location.BountyCount -- BountyCount will be lowered as bounties are completed but we still need an ID. this is good enough.
+    BountyHunter.NextAvailableBountyId = BountyHunter.NextAvailableBountyId + 1 
 
-    --print('added bounty ' .. location.TotalBountyCount .. ' for ' .. firstName .. ' ' .. lastName .. ' charged with ' .. tostring(crime.Name) .. ' with $' .. tostring(crime.Reward) .. ' reward in ' .. tostring(location.Name) .. ' last known location index ' .. tostring(bountyLocation.Id))
+    print('added bounty ' .. BountyHunter.NextAvailableBountyId .. ' for ' .. firstName .. ' ' .. lastName .. ' charged with ' .. tostring(crime.Name) .. ' with $' .. tostring(crime.Reward) .. ' reward in ' .. tostring(location.Name) .. ' last known location index ' .. tostring(bountyLocation.Id))
 
     -- build the data table to store and store it
     local data = {
-        Id = location.TotalBountyCount,
+        Id = BountyHunter.NextAvailableBountyId,
         LocationId = location.Id,
         BountyIndex = bountyLocation.Id,
         FirstName = firstName,

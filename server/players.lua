@@ -19,6 +19,10 @@ Helpers.PacketHandler('player:GiveMoney', function(playerId, data)
     Players.GiveMoney(playerId, data.TargetId, data.Amount)
 end)
 
+Helpers.PacketHandler('player:BonusXP', function(playerId, data)
+    Players.BonusXP(playerId)
+end)
+
 -- Class Functions
 function Players.GiveMoney(playerId, targetId, amount)
     -- get from character
@@ -39,5 +43,26 @@ function Players.GiveMoney(playerId, targetId, amount)
             Helpers.Respond(playerId, '^2You gave that person $' .. amount)
             Helpers.Respond(targetId, '^2You received $' .. amount)
         end)
+    end)
+end
+
+function Players.BonusXP(playerId)
+    Helpers.GetCharacter(playerId, function(character)
+        if (character == nil) then
+            return
+        end
+
+        local nextBonusAt = character.getSessionVar('NextBonusXP') or GetGameTimer()
+        if (nextBonusAt > GetGameTimer()) then
+            return
+        end
+
+        character.addXP(5)
+        character.setSessionVar('NextBonusXP', GetGameTimer()+119000)
+
+        -- todo
+        -- the message feels annoying.
+        -- add some kind of less annoying ui popup to show xp bonus
+        --Helpers.Respond(playerId, '^2You received your 5 bonus XP.')
     end)
 end

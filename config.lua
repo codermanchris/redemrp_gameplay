@@ -11,7 +11,7 @@ GameplayConfig = {
 
 -- Color definitions
 Colors = {
-	Marker = { r = 255, g = 255, b = 255, a = 15 },
+	Marker = { r = 200, g = 255, b = 200, a = 50 },
 	Text = { r = 125, g = 255, b = 125, a = 125 },
 	Illegal = { r = 255, g = 0, b = 0, a = 125 }
 }
@@ -35,6 +35,7 @@ BountyHunter = {
     BountyCooldown = 60000*60,      -- a BountyCoords can only be used this often
     MaxBounties = 8,                -- max amount of bounties available in any one town. (mostly ui constraint, need to add overflow scroller)
     Datas = {},                     -- store datas by player id for bounties
+    NextAvailableBountyId = 0,
 
     Locations = {
         [1] = {
@@ -43,7 +44,6 @@ BountyHunter = {
             Coords = vector3(-272.34, 804.44, 119.35),
             DropOffCoords = vector3(-275.35, 800.72, 119.39),
             BountyCount = 0,
-            TotalBountyCount = 0,
             Bounties = {},
             BountyCoords = {
                 --[1] = { Id = 1, Coords = vector3(-270.7, 796.53, 118.66) }, -- testing position
@@ -63,7 +63,6 @@ BountyHunter = {
             Coords = vector3(-1804.19, -348.31, 164.19),
             DropOffCoords = vector3(-1804.07, -352.32, 164.13),
             BountyCount = 0,
-            TotalBountyCount = 0,
             Bounties = {},
             BountyCoords = {
                 [1] = { Id = 1, Coords = vector3(-1723.66, -87.87, 181.71) },
@@ -82,7 +81,6 @@ BountyHunter = {
             Coords = vector3(-5529.07, -2945.41, -1.56),
             DropOffCoords = vector3(-5526.54, -2933.56, -1.97),
             BountyCount = 0,
-            TotalBountyCount = 0,
             Bounties = {},
             BountyCoords = {
                 [1] = { Id = 1, Coords = vector3(-5859.58, -3185.88, -13.33) },
@@ -99,7 +97,26 @@ BountyHunter = {
 }
 
 Delivery = { 
-    Locations = {}
+    Drivers = {},
+    Locations = {
+        [1] = {
+            Id = 1,
+            Name = 'Valentine Shipping Yard',
+            Coords = vector3(-264.39, 707.09, 113.6),
+            VehicleCoords = vector4(-259.17, 706.14, 113.59, 286.9),
+            PickupCoords = vector3(-257.34, 701.0, 113.43),
+            DropOffCoords = {
+                --[1] = { Id = 1, Coords = vector3(-262.37, 714.01, 113.91), UnloadCoords = vector3(-262.37, 714.01, 113.91)},
+                [1] = { Id = 1, Coords = vector3(-851.69, 333.49, 95.81), UnloadCoords = vector3(-852.51, 337.31, 96.12) },
+                [2] = { Id = 2, Coords = vector3(-1295.07, 384.17, 95.25), UnloadCoords = vector3(-1298.65, 387.16, 95.27) },
+                [3] = { Id = 3, Coords = vector3(-2207.33, 717.88, 122.49), UnloadCoords = vector3(-2207.54, 725.58, 122.75) },
+                [4] = { Id = 4, Coords = vector3(205.7, 990.54, 190.15), UnloadCoords = vector3(206.51, 986.07, 190.29) },
+                [5] = { Id = 5, Coords = vector3(781.39, 868.84, 120.14), UnloadCoords = vector3(773.77, 867.8, 120.66) },
+                [6] = { Id = 6, Coords = vector3(-314.84, -355.95, 87.59), UnloadCoords = vector3(-320.43, -353.25, 87.57) },
+            }
+
+        }
+    }
 }
 
 Doctor = {
@@ -116,6 +133,7 @@ Doctor = {
 }
 
 Fisher = {
+    FishingAnimationHash = GetHashKey('WORLD_HUMAN_STAND_FISHING'),
     Locations = {}
 }
 
@@ -144,6 +162,17 @@ Hunter = {
                 [6] = vector3(1363.5, 402.05, 90.5),
                 [7] = vector3(1316.66, 359.12, 86.37),
                 [8] = vector3(1328.97, 246.07, 86.94)
+            }
+        },
+        [2] = {
+            Id = 2,
+            Name = 'Valentine Farm',
+            Coords = vector3(-409.51, 664.63, 114.85),
+            PredatorCoords = {
+                [1] = vector3(-483.68, 695.34, 109.43),
+                [2] = vector3(-499.69, 646.86, 105.62),
+                [3] = vector3(-469.05, 593.01, 105.74),
+                [4] = vector3(-434.23, 574.45, 104.84)
             }
         }
     }
@@ -1317,6 +1346,7 @@ Controls = {
     ScriptedFlyZdown = 0x9C5E030C,
     Count = 0x8EDFFB30    
 }
+
 
 BlipSpriteType = {
     AdversaryLarge = -180188163,

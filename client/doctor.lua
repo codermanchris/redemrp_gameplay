@@ -193,6 +193,25 @@ end
 
 function Doctor.HandleOnDuty(playerPed, playerCoords)       
 
+    -- handle off duty marker
+    if (Doctor.Closest.Distance < 25.0) then
+        -- draw duty marker
+        Helpers.DrawMarker(Doctor.CurrentLocation.Coords, Colors.Marker)
+
+        -- if we're close enough to buy marker, let's show the prompt
+        if (Doctor.Closest.Distance < 1.0) then
+            Helpers.Prompt(Doctor.OffDutyPrompt, function()
+                Helpers.Packet('doctor:GoOffDuty', { LocationId = Doctor.Closest.Index })
+                Doctor.IsOnDuty = false
+            end)
+        else
+            -- cancel prompt if we ran too far away
+            if (Doctor.Closest.Distance > 1.5) then
+                Helpers.CancelPrompt(Doctor.OffDutyPrompt)
+            end
+        end 
+    end
+
     -- get aiming target
     local isAiming, aimTarget = GetEntityPlayerIsFreeAimingAt(PlayerId())
     if (isAiming and DoesEntityExist(aimTarget)) then                
