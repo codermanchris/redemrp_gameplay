@@ -9,7 +9,7 @@ These jobs are a work in progress. If you want to see these jobs in action, we h
 * Enable/disable any of the provided jobs in the config.
 * Jobs  
   * Bounty Hunting **[IN DEVELOPMENT]**
-  * Delivery **[INCOMPLETE]**
+  * Delivery **[MOSTLY COMPLETE, NEEDS MORE LOCATIONS]**
   * Doctor **[ALMOST DONE]**
   * Fisher **[INCOMPLETE]**
   * Hunter **[ALMOST DONE]**
