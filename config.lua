@@ -32,11 +32,12 @@ LocalPlayer = {
 
 BountyHunter = {
     BountyGenerateWait = 60000*2,   -- how long it takes before generating another ai bounty
-    BountyCooldown = 60000*60,      -- a BountyCoords can only be used this often
+    BountyCooldown = 60000*30,      -- a BountyCoords can only be used this often
     MaxBounties = 8,                -- max amount of bounties available in any one town. (mostly ui constraint, need to add overflow scroller)
     Datas = {},                     -- store datas by player id for bounties
     NextAvailableBountyId = 0,
-
+    MissionExtraPeds = {},
+    
     Locations = {
         [1] = {
             Id = 1,
@@ -137,6 +138,17 @@ Fisher = {
     Locations = {}
 }
 
+GeneralStore = {
+    Locations = {
+        [1] = {
+            Id = 1,
+            Name = 'General Store',
+            Coords = vector3(-324.25, 801.29, 117.88),
+            CheeseCoords = vector3(-324.25, 801.29, 117.88),
+        }
+    }
+}
+
 Hunter = {
     PredatorHashes = {
         'A_C_Coyote_01',
@@ -223,7 +235,8 @@ Lawman = {
             Name = 'Valentine Sheriff',
             Coords = vector3(-276.07, 806.98, 119.38),
             ArmoryCoords = vector3(-278.38, 805.19, 119.38),
-            DutyCoords = vector3(-278.53, 808.31, 119.38)
+            DutyCoords = vector3(-278.53, 808.31, 119.38),
+            PaperworkCoords = vector3(-277.95, 803.42, 119.38)
         },
         [2] = {
             Id = 2,
@@ -243,21 +256,21 @@ Lawman = {
 }
 
 Moonshiner = {
-    
+    Coords = vector3(1945.58, -681.85, 42.05),
 }
 
 -- Various config related definitions
 Crimes =  {
-    [1] = { Name = 'Murder', Reward = 50, XP = 25 },
-    [2] = { Name = 'Attempted Murder', Reward = 10, XP = 15 },
-    [3] = { Name = 'Street Robbery', Reward = 10, XP = 15 },
-    [4] = { Name = 'Horse Theft', Reward = 25, XP = 15 },
-    [5] = { Name = 'Drunk and Disorderly', Reward = 5, XP = 15 },
-    [6] = { Name = 'Poaching', Reward = 10, XP = 15 },
-    [7] = { Name = 'Rape', Reward = 50, XP = 25 },
-    [8] = { Name = 'Escaped Prisoner', Reward = 15, XP = 20 },
-    [9] = { Name = 'Arson', Reward = 15, XP = 15 },
-    [10] = { Name = 'Rustling', Reward = 10, XP = 15 },
+    [1] = { Name = 'Murder', Reward = 20, XP = 30, MaxPedCount = 5 },
+    [2] = { Name = 'Attempted Murder', Reward = 10, XP = 15, MaxPedCount = 3 },
+    [3] = { Name = 'Street Robbery', Reward = 10, XP = 15, MaxPedCount = 2 },
+    [4] = { Name = 'Horse Theft', Reward = 10, XP = 15, MaxPedCount = 2 },
+    [5] = { Name = 'Drunk and Disorderly', Reward = 5, XP = 10, MaxPedCount = 1 },
+    [6] = { Name = 'Poaching', Reward = 10, XP = 15, MaxPedCount = 3 },
+    [7] = { Name = 'Rape', Reward = 17, XP = 25, MaxPedCount = 4 },
+    [8] = { Name = 'Escaped Prisoner', Reward = 10, XP = 15, MaxPedCount = 2 },
+    [9] = { Name = 'Arson', Reward = 10, XP = 15, MaxPedCount = 2 },
+    [10] = { Name = 'Rustling', Reward = 10, XP = 15, MaxPedCount = 2 },
 }
 
 FirstNames = {
@@ -1968,6 +1981,10 @@ Markers = {
 	Num_7 = 0x75FEB0E,
 	Num_8 = 0xDD839756,
 	num_9 = 0xE9F6303B
+}
+
+HudHashes = {
+    Reticule = 0xBB47198C
 }
 
 WeaponHashes = {

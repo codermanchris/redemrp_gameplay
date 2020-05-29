@@ -104,6 +104,7 @@ function Lawman.GetArmoryItem(playerId, locationId, itemId)
 end
 
 function Lawman.Cuff(playerId, targetId)
+    print('try to cuff ' .. playerId .. ' ' .. tostring(targetId))
     Helpers.GetCharacter(playerId, function(lawman) 
         -- validate lawman
         if (lawman == nil) then
@@ -113,6 +114,7 @@ function Lawman.Cuff(playerId, targetId)
         Helpers.GetCharacter(targetId, function(suspect)
             -- validate suspect
             if (suspect == nil) then
+                print('no suspect in cuff')
                 return
             end
 
@@ -121,7 +123,7 @@ function Lawman.Cuff(playerId, targetId)
             suspect.setSessionVar('IsCuffed', not isCuffed)
 
             -- notify target that cuffs need to be put on
-            Helpers.Packet(targetId, 'player:Cuff', { LawmanId = playerId })
+            Helpers.Packet(targetId, 'player:Restrain', { LawmanId = playerId, RestraintType = 0 })
         end)
     end)
 end

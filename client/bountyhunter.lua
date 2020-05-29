@@ -106,7 +106,7 @@ function BountyHunter.StartMission(bounty)
     BountyHunter.CurrentBounty.Blip = Helpers.AddBlip(BlipSpriteType.MissionAreaBounty, BountyHunter.CurrentBounty.Coords, 'Bounty Location')
 
     -- spawn npcs
-    BountyHunter.SpawnMissionPeds()
+    BountyHunter.SpawnMissionPeds(bounty.Crime.MaxPedCount)
 end
 
 function BountyHunter.HandleMission(playerPed, playerCoords)
@@ -158,7 +158,7 @@ function BountyHunter.HandleMission(playerPed, playerCoords)
     end
 end
 
-function BountyHunter.SpawnMissionPeds()
+function BountyHunter.SpawnMissionPeds(maxPedCount)
     -- todo
     -- 1. make this spawn a group of peds
     -- 2. fine tune peds to match their crime
@@ -166,6 +166,7 @@ function BountyHunter.SpawnMissionPeds()
     --  2.b thieves cower
     --  2.c think about more.
 
+    -- main mission ped
     local coords = BountyHunter.CurrentBounty.Coords
     BountyHunter.MissionPed = Helpers.SpawnNPC('A_M_M_UniGunslinger_01', coords.x, coords.y, coords.z)
 
@@ -181,6 +182,25 @@ function BountyHunter.SpawnMissionPeds()
     -- give the guy a rifle perhaps
     if (math.random(1, 100) > 80) then
         GiveWeaponToPed_2(BountyHunter.MissionPed, WeaponHashes.RepeaterCarbine, 1, true, true, GetWeapontypeGroup(WeaponGroups.Repeater), true, 0.5, 1.0, 0, true, 0, 0)
+    end
+
+    -- spawn secondary peds
+    if (maxPedCount > 1) then
+        local pedCount = math.random(1, maxPedCount)
+
+        print('spawning ' .. pedCount .. ' for bounty')
+        for i = 1, pedCount do
+            if (BountyHunter.MissionExtraPeds[i] ~= nil) then
+                DeleteEntity(BountyHunter.MissionExtraPeds[i])
+            end
+
+            local pedCoords = GetOffsetFromEntityInWorldCoords(coords, -2.0 + i, -2.0, 0.0)
+            BountyHunter.MissionExtraPeds[i] = Helpers.SpawnNPC('A_M_M_UniGunslinger_01', pedCoords.x, pedCoords.y, pedCoords.z)
+            
+            if (math.random(1, 100) > 80) then
+                GiveWeaponToPed_2(BountyHunter.MissionExtraPeds[i], WeaponHashes.RepeaterCarbine, 1, true, true, GetWeapontypeGroup(WeaponGroups.Repeater), true, 0.5, 1.0, 0, true, 0, 0)
+            end
+        end    
     end
 end
 

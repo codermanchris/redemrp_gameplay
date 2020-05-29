@@ -11,6 +11,7 @@ server_scripts {
     'server/delivery.lua',
     'server/doctor.lua',
     'server/fisher.lua',
+    'server/generalstore.lua',
     'server/hunter.lua',
     'server/lawman.lua',
     'server/moonshiner.lua'    
@@ -24,9 +25,10 @@ client_scripts {
     'client/delivery.lua',
     'client/doctor.lua',
     'client/fisher.lua',
+    'client/generalstore.lua',
     'client/hunter.lua',
     'client/lawman.lua',
-    'client/moonshiner.lua'
+    'client/moonshiner.lua',    
 }
 
 ui_page 'client/ui/ui.html'
@@ -55,4 +57,5 @@ files {
     -- images
     'client/ui/images/wanted.jpg',
     'client/ui/images/woodpanels.jpg',
+    'client/ui/images/oldparchmentbg.jpg',
 }

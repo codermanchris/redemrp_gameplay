@@ -27,7 +27,51 @@
     </div>
 
     <div id='lawman'>
-
+        <div class='content'>
+            <div class='navbar' style='border: 1px solid #000;'>
+                Sheriff's Office<br />
+                <a href='#' onclick='lawman.openTab(0);'>Persons</a> | <a href='#' onclick='lawman.openTab(1);'>Arrests</a> | <a href='#' onclick='lawman.openTab(2);'>Warrants</a>
+            </div>
+            <div class='persons tab0' style='border: 1px solid #000;'>
+                <div class='search'>
+                    <input type='text' class='search-text' placeholder='NAME' /><br />
+                    <input type='button' value='SEARCH PERSONS' onclick='lawman.searchPersons();' />
+                </div>
+                <div class='search-results'>
+                </div>
+                <div class='selected'>
+                    NAME: <span class='name'></span><br />
+                    ADDRESS: <span class='name'></span><br /><br />
+                    WANTED: NOT WANTED<br />
+                    ARRESTS:<br />
+                    <div class='persons-arrests'></div>
+                </div>
+            </div>
+            <div class='arrests tab1' style='border: 1px solid #000;'>
+                <div class='search'>
+                    <input type='text' class='search-case' placeholder='CASE NUMBER' /> <input type='text' class='search-name' placeholder='NAME' /><br />
+                    <input type='button' value='SEARCH ARRESTS' />
+                </div>
+                <div class='search-results'>
+                </div>
+                <div class='selected'>
+                    NAME: <span class='name'></span><br />
+                    ADDRESS: <span class='name'></span><br /><br />
+                    ARREST NOTES: <span class='arrest-notes'></span>
+                </div>
+            </div>
+            <div class='warrants tab2' style='border: 1px solid #000;'>
+                <div class='search'>
+                    <input type='text' class='search-case' placeholder='CASE NUMBER' /> <input type='text' class='search-text' placeholder='TEXT' /><br />
+                    <input type='button' value='SEARCH ARRESTS' />
+                </div>
+                <div class='search-results'>
+                </div>
+                <div class='selected'>
+                    WARRANT NOTES:  <span class='warrant-notes'></span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id='moonshiner'>

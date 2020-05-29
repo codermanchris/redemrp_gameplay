@@ -23,8 +23,15 @@ Helpers.PacketHandler('player:BonusXP', function(playerId, data)
     Players.BonusXP(playerId)
 end)
 
+-- redemrp_inventory useable item registrations
+RegisterServerEvent('RegisterUsableItem:Cheese')
+AddEventHandler('RegisterUsableItem:Cheese', function(playerId)
+    Players.FeedHorse(playerId, 50, 50)
+end)
+
 -- Class Functions
 function Players.GiveMoney(playerId, targetId, amount)
+    print('try and give money ' .. playerId .. ' ' .. tostring(targetId) .. ' ' .. tostring(amount))
     -- get from character
     Helpers.GetCharacter(playerId, function(character)
         -- validate from character has the money
@@ -35,6 +42,11 @@ function Players.GiveMoney(playerId, targetId, amount)
 
         -- get the to character 
         Helpers.GetCharacter(targetId, function(targetCharacter)
+            if (targetCharacter == nil) then
+                print('invalid target for give money')
+                return
+            end
+
             -- make the transfer
             targetCharacter.addMoney(amount)
             character.removeMoney(amount)
@@ -65,4 +77,8 @@ function Players.BonusXP(playerId)
         -- add some kind of less annoying ui popup to show xp bonus
         --Helpers.Respond(playerId, '^2You received your 5 bonus XP.')
     end)
+end
+
+function Players.FeedHorse(playerId, health, stamina)
+    Helpers.Packet(playerId, 'player:FeedHorse', { Health = health, Stamina = stamina })
 end

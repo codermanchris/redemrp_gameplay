@@ -101,7 +101,15 @@ function BountyHunter.GetBoard(playerId, locationId)
         return
     end
 
-    Helpers.Packet(playerId, 'bounty:SetBoard', { Bounties = location.Bounties })
+    local bounties = {}
+    for k, v in pairs(location.Bounties) do
+        if (not bounties.IsUsedBy or bounties.IsUsedBy == -1) then
+            table.insert(bounties, v)
+            print('inserted bounty to getboard')
+        end
+    end
+    
+    Helpers.Packet(playerId, 'bounty:SetBoard', { Bounties = bounties })
 end
 
 function BountyHunter.SelectBounty(playerId, locationId, bountyId)

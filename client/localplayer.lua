@@ -1,7 +1,26 @@
+-- Start Gameplay Thread
 Helpers.StartGameplay(LocalPlayer)
 
+-- Packet Handlers
+Helpers.PacketHandler('player:Restrain', function(data)
+    if (data.RestraintType == 0) then -- cuffs
+        LocalPlayer.ToggleCuffs()
+    elseif (data.RestraintType == 1) then -- ankle cuffs
+        LocalPlayer.ToggleAnkleCuffs()
+    end
+end)
+
+Helpers.PacketHandler('player:FeedHorse', function(data)
+    LocalPlayer.FeedHorse(data.Health, data.Stamina)
+end)
+
+-- Class Functions
 function LocalPlayer.Initialize()
     LocalPlayer.NextBonusAt = GetGameTimer()
+
+    -- hide reticule
+    Citizen.InvokeNative(0x4CC5F2FC1332577F, HudHashes.Reticule)
+    --Citizen.InvokeNative(0x8BC7C1F929D07BF3, HudHashes.Reticule)
 end
 
 function LocalPlayer.Tick()
@@ -48,7 +67,7 @@ function LocalPlayer.HandlePrompts(playerPed, playerCoords)
             local targetCoords = GetEntityCoords(targetPed)
 
             -- if we're standing close enough, do it
-            if (Helpers.GetDistance(playerCoords, targetCoords) < 5.0) then
+            if (Helpers.GetDistance(playerCoords, targetCoords) < 3.0) then
                 -- make prompt
                 if (not LocalPlayer.GiveMoneyPrompt) then
                     local groupId = PromptGetGroupIdForTargetEntity(aimTarget)
@@ -107,16 +126,25 @@ function LocalPlayer.HandleRestrained(playerPed, playerCoords)
 end
 
 function LocalPlayer.ToggleCuffs()
-    LocalPlayer = not LocalPlayer.IsCuffed
+    LocalPlayer.IsCuffed = not LocalPlayer.IsCuffed
 
+    local playerPed = PlayerPedId()
     if (LocalPlayer.IsCuffed) then
-
+        SetEnableHandcuffs(playerPed, true)
+        DisablePlayerFiring(playerPed, true)
+        SetCurrentPedWeapon(playerPed, WeaponHashes.Unarmed, true)
+        SetPedCanPlayGestureAnims(playerPed, false)
+        DisplayRadar(false)
     else
-
+        ClearPedSecondaryTask(playerPed)
+        SetEnableHandcuffs(playerPed, false)
+        DisablePlayerFiring(playerPed, false)
+        SetPedCanPlayGestureAnims(playerPed, true)
+        DisplayRadar(true)
     end
 end
 
-function LocalPlayer.ToggleAnkleRestraints()
+function LocalPlayer.ToggleAnkleCuffs()
     LocalPlayer = not LocalPlayer.IsAnklesRestrained
 
     if (LocalPlayer.IsAnklesRestrained) then
@@ -134,4 +162,22 @@ function LocalPlayer.ToggleHogtied()
     else
 
     end
+end
+
+function LocalPlayer.FeedHorse(healAmount, staminaAmount)
+    Helpers.MessageUI('core', 'initProgressBar', { Rate = 0.2 })
+    SetTimeout(5000, function()
+        local horse = GetMount(PlayerPedId())
+        if (not DoesEntityExist(horse)) then
+            return
+        end
+
+        -- get core values
+        local health = Citizen.InvokeNative(0x36731AC041289BB1, horse, 0, Citizen.ResultAsInteger())
+        local stamina = Citizen.InvokeNative(0x36731AC041289BB1, horse, 1, Citizen.ResultAsInteger())        
+
+        -- set core values
+        Citizen.InvokeNative(0xC6258F41D86676E0, horse, 0, math.clamp(health + healAmount, 0, 100))
+        Citizen.InvokeNative(0xC6258F41D86676E0, horse, 1, math.clamp(stamina + staminaAmount, 0, 100))
+    end)
 end

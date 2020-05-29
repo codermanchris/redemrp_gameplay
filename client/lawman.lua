@@ -31,6 +31,7 @@ function Lawman.SetupPrompts()
     Lawman.OnDutyPrompt = Helpers.RegisterPrompt('Go On Duty', Controls.MultiplayerInfo, nil)
     Lawman.OffDutyPrompt = Helpers.RegisterPrompt('Go Off Duty', Controls.MultiplayerInfo, nil)
     Lawman.ArmoryPrompt = Helpers.RegisterPrompt('Armory', Controls.MultiplayerInfo, nil)
+    Lawman.PaperworkPrompt = Helpers.RegisterPrompt('Paperwork', Controls.MultiplayerInfo, nil)
 
     -- cuff/uncuff prompt 
     -- escort
@@ -62,7 +63,8 @@ function Lawman.HandleOnDuty(playerPed, playerCoords)
     -- we're at a sheriff's office
     if (Lawman.Closest.Distance < 25.0) then
         Lawman.ProcessOffDutyMarker(playerCoords)
-        Lawman.ProcessArmoryMarker(playerCoords)   
+        Lawman.ProcessArmoryMarker(playerCoords)
+        Lawman.ProcessPaperworkMarker(playerCoords)
     end
 end
 
@@ -145,16 +147,48 @@ function Lawman.ProcessArmoryMarker(playerCoords)
     end
 end
 
+function Lawman.ProcessPaperworkMarker(playerCoords)
+    -- if we're close enough to show this marker
+    local distance = Helpers.GetDistance(playerCoords, Lawman.ClosestLocation.PaperworkCoords)
+    if (distance < 5.0) then
+        -- draw marker for paperwork
+        Helpers.DrawMarker(Lawman.ClosestLocation.PaperworkCoords, Colors.Marker)
+
+        -- if we're close enough to handle some promptness, do it
+        if (distance < 1.0) then
+            Lawman.HasPaperworkPrompt = true
+
+            -- process prompt and open lawman ui
+            Helpers.Prompt(Lawman.PaperworkPrompt, function()
+                Helpers.OpenUI('lawman', nil)
+            end)
+        else
+            -- clear paperwork prompt
+            if (distance > 1.5 and Lawman.HasPaperworkPrompt) then
+                Lawman.HasPaperworkPrompt = false
+                Helpers.CancelPrompt(Lawman.PaperworkPrompt)                    
+            end
+        end
+    end
+end
+
 function Lawman.ProcessPrompts(playerPed, playerCoords)
     -- get aiming target
     local isAiming, aimTarget = GetEntityPlayerIsFreeAimingAt(PlayerId())
     if (isAiming and DoesEntityExist(aimTarget)) then                
         -- get aiming handle and make sure its a player
-        local targetPlayerId = NetworkGetPlayerIndexFromPed(aimTarget)    
+        local targetPlayerId = NetworkGetPlayerIndexFromPed(aimTarget)
+
+        --GetPlayerServerId(aimTarget)
         if (NetworkIsPlayerActive(targetPlayerId)) then
             -- get target ped and coords
             local targetPed = GetPlayerPed(targetPlayerId)
             local targetCoords = GetEntityCoords(targetPed)
+            local targetNetworkId = GetPlayerServerId(targetPlayerId)
+
+            if (Helpers.GetDistance(playerCoords, targetCoords) > 3.0) then
+                return
+            end
 
             -- make prompt
             if (not Lawman.CuffPrompt) then
@@ -165,7 +199,7 @@ function Lawman.ProcessPrompts(playerPed, playerCoords)
             -- handle prompt for cuffing
             Helpers.Prompt(Lawman.CuffPrompt, function()
                 -- notify server to cuff/uncuff this person
-                Helpers.Packet('lawman:Cuff', { TargetId = targetPlayerId })
+                Helpers.Packet('lawman:Cuff', { TargetId = targetNetworkId })
             end)
         else
             -- its a local
