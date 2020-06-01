@@ -21,9 +21,11 @@ These jobs are a work in progress. If you want to see these jobs in action, we h
 ## 2. Requirements
  
 https://github.com/RedEM-RP/redem_roleplay
+https://github.com/RedEM-RP/redemrp_inventory
   
 ## 3. Installation
  * Either clone or download this repository and put it in your server-data/resources/[redemrp] folder.
+ * Run the sql create scripts located in the sql folder on your db.
  * Open your server.cfg and add ensure redemrp_gameplay to it
  * Start your server.
  
