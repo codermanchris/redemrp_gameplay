@@ -57,9 +57,9 @@ function Hunter.PayTimer()
         for k, v in pairs(Hunter.Hunters) do
             Helpers.GetCharacter(k, function(character)
                 character.addXP(5)
-                character.addMoney(2)
+                character.addMoney(1)
 
-                Helpers.Respond(k, '^2You have been paid $2.00 and received 5 xp for your work, Hunter.')
+                Helpers.Respond(k, '^2You have been paid $1.00 and received 5 xp for your work, Hunter.')
             end) 
         end
 

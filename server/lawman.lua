@@ -19,8 +19,20 @@ Helpers.PacketHandler('lawman:Escort', function(playerId, data)
     Lawman.Escort(playerId, data.TargetId)
 end)
 
-Helpers.PacketHandler('lawman:Hogtie', function(playerId, data)
-    Lawman.Hogtie(playerId, data.TargetId)
+Helpers.PacketHandler('lawman:SearchPersons', function(playerId, data)
+    Lawman.SearchPersons(playerId, data.FirstName, data.LastName)
+end)
+
+Helpers.PacketHandler('lawman:SearchArrests', function(playerId, data)
+    Lawman.SearchArrests(playerId, data.CaseNumber, data.FirstName, data.LastName)
+end)
+
+Helpers.PacketHandler('lawman:SearchWarrants', function(playerId, data)
+    Lawman.SearchWarrants(playerId, data.CaseNumber, data.FirstName, data.LastName)
+end)
+
+Helpers.PacketHandler('lawman:AddNote', function(playerId, data)
+    Lawman.AddNote(playerId, data.LocationId, data.TargetId, data.Message)
 end)
 
 -- Class Functions
@@ -151,27 +163,88 @@ function Lawman.Escort(playerId, targetId)
     end)
 end
 
-function Lawman.Hogtie(playerId, targetId)
-    Helpers.GetCharacter(playerId, function(lawman) 
-        -- validate lawman
-        if (lawman == nil) then
-            return
+function Lawman.SearchPersons(playerId, firstName, lastName)
+    -- note:
+    -- i am forced to use the LOWER function here because case sensitivty matters on the `characters` table apparently.
+    -- this table is created with the redemrp_identity script so i don't want to change it as this will affect everyone
+    -- that uses that resource.
+    local query = 'select * from `characters` where ' 
+    local queryAdds = ''
+    if (firstName ~= nil and #firstName > 0) then
+        queryAdds = queryAdds .. 'lower(FirstName) like @FirstName'
+    end
+    if (lastName ~= nil and #lastName > 0) then
+        if (#queryAdds > 0) then
+            queryAdds = queryAdds .. ' or ' 
         end
+        queryAdds = queryAdds .. 'lower(LastName) like @LastName'
+    end
+    query = query .. queryAdds
 
-        Helpers.GetCharacter(targetId, function(suspect)
-            -- validate suspect
-            if (suspect == nil) then
-                return
-            end
+    print(query)
+    local params = {
+        ['@FirstName'] = string.lower('%' .. firstName .. '%'),
+        ['@LastName'] = string.lower('%' .. lastName .. '%')
+    }
+    
+    -- perform query
+    MySQL.Async.fetchAll(query, params, function(results)
+        if (results == nil or results[1] == nil) then
+            print('no results')
+        end
+        Helpers.Packet(playerId, 'lawman:OnSearchPersons', { Results = results })
+    end)
+end
 
-            -- assign session var
-            local isHogtied = suspect.getSessionVar('IsHogtied') or false
-            suspect.setSessionVar('IsHogtied', not isHogtied)
+function Lawman.SearchArrests(playerId, caseNumber, firstName, lastName)    
+    local query = 'select * from `arrests` as a inner join `characters` as c on a.CharacterId = c.Id where a.CaseNumber like @CaseNumber or c.FirstName like @FirstName or c.LastName like @LastName'
+    local params = {
+        ['@CaseNumber'] = '%' .. caseNumber .. '%',
+        ['@FirstName'] = '%' .. firstName .. '%',
+        ['@LastName'] = '%' .. lastName .. '%',
+    }
+    
+    -- perform query
+    MySQL.Async.fetchAll(query, params, function(results)
+        Helpers.Packet(playerId, 'lawman:OnSearchArrests', { Results = results })
+    end)
+end
 
-            -- notify target that cuffs need to be put on
-            Helpers.Packet(targetId, 'player:Hogtie', { LawmanId = playerId })
+function Lawman.SearchWarrants(playerId, caseNumber, firstName, lastName)  
+    local query = 'select * from `warrants` as a inner join `characters` as c on a.CharacterId = c.Id where a.CaseNumber like @CaseNumber or c.FirstName like @FirstName or c.LastName like @LastName'
+    local params = {
+        ['@CaseNumber'] = '%' .. caseNumber .. '%',
+        ['@FirstName'] = '%' .. firstName .. '%',
+        ['@LastName'] = '%' .. lastName .. '%',
+    }
+    
+    -- perform query
+    MySQL.Async.fetchAll(query, params, function(results)
+        Helpers.Packet(playerId, 'lawman:OnSearchWarrants', { Results = results })
+    end) 
+end
+
+function Lawman.AddNote(playerId, locationId, targetId, message)
+    if (#message > 255) then
+        message = string.sub(message, 0, 254)
+    end
+
+    Helpers.GetCharacter(playerId, function(sheriff)
+        Helpers.GetCharacter(targetId, function(target)
+            local query = 'insert into `characternotes` set (CharacterId, SheriffId, LocationId, Message) values (@CharacterId, @SheriffId, @LocationId, @Message); select LAST_INSERT_ID();'
+            local params = {
+                ['@CharacterId'] = target.Id,
+                ['@SheriffId'] = sheriff.Id,
+                ['@LocationId'] = locationId,
+                ['@Message'] = message
+            }
+            
+            -- perform query
+            MySQL.Async.fetchScalar(query, params, function(returnId)
+                --
+            end)            
         end)
-    end)  
+    end)
 end
 
 -- Payment Timer

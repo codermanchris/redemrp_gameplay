@@ -151,7 +151,12 @@ function Doctor.TreatPlayer(playerId, patientId, revive, coords)
 end
 
 function Doctor.OnPlayerDropped(playerId)
-    
+    for k, v in pairs(Doctor.Locations) do
+        if (v.DoctorId == playerId) then
+            v.DoctorId = nil
+            break
+        end
+    end
 end
 
 -- Payment Timer

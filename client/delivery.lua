@@ -20,6 +20,11 @@ Helpers.PacketHandler('delivery:Start', function(data)
     Delivery.StartDelivery(data.DeliveryIndex)
 end)
 
+-- NUI Callbacks
+RegisterNUICallback('delivery:Start', function(data, cb)
+    Helpers.Packet('delivery:GoOnDuty', { LocationId = Delivery.CurrentLocation.Id })
+end)
+
 -- Class Functions
 function Delivery.Initialize()
     Delivery.SetupPrompts()
@@ -122,7 +127,7 @@ function Delivery.ProcessOnDutyMarker(playerCoords)
             Delivery.HasDutyPrompt = true
             -- process prompt and request duty from server
             Helpers.Prompt(Delivery.OnDutyPrompt, function()
-                Helpers.Packet('delivery:GoOnDuty', { LocationId = Delivery.CurrentLocation.Id })
+                Helpers.OpenUI('delivery', nil)
             end)
         else
             -- clear duty prompt

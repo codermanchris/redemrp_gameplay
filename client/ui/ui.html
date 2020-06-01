@@ -7,15 +7,51 @@
 <body>
 
     <!-- gameplay elements -->
-    <div id='bountyhunter' style='text-align: center;'>                                                        
+    <div id='bountyhunter'>
     </div>
 
     <div id='delivery'>
+        <div class='padded-container'>
+            <h2>Delivery Driver</h2>
 
+            Do you think you have what it takes to make these deliveries on time, partner? We need someone who can drive quickly and safely. Someone who will make our deliveries on time. <br /><br />
+            If you think you're the one for the job, go ahead and accept the contract below.<br /><br />
+
+            Our Offer:<br />
+            - We will pay driver $2.00 per 5 minutes of work.<br />
+            - We will allow driver to keep all tips from customers.<br />
+            - We will provide one small cart and horse for driver.<br />
+            - If said horse and cart are not returned when quitting the job, the driver will be charged a minimum of $100.00.<br />
+            - The driver will be required to make each delivery within 10 minutes time or they will be fired.<br /><br />
+
+            Do you agree to these terms?
+        </div>
+
+        <div class='contract-footer'>
+            <input type='button' value='REJECT' onclick='delivery.close();' />
+            <input type='button' value='ACCEPT' onclick='delivery.acceptOffer();' />
+        </div>
     </div>
 
     <div id='doctor'>
+        <div class='padded-container'>
+            <h2>Doctor</h2>
 
+            If you are an intelligent person and are willing to help the less fortunate and sick people of our town. Please go ahead and sign on up to be a doctor.<br /><br />
+        
+            Our Offer:<br />
+            - We will pay you $3.00 per 5 minutes of work.<br />
+            - You will be required and under oath to treat every wounded and sick person you come across.<br />
+            - You will be provided medical supplies to treat your patients.<br />
+            - If you refuse to treat any wounded or sick person you are subject to arrest.<br /><br />
+    
+            Do you agree to these terms?
+        </div>
+
+        <div class='contract-footer'>            
+            <input type='button' value='REJECT' onclick='doctor.close();' />
+            <input type='button' value='ACCEPT' onclick='doctor.acceptOffer();' /> 
+        </div>
     </div>
 
     <div id='fisher'>
@@ -23,36 +59,72 @@
     </div>
 
     <div id='hunter'>
+        <div class='padded-container'>
+            <h2>Hunter</h2>
 
+            Predators keep attacking our farm, partner. It seems like Coyotes, Cougars and Bears come around every few minutes.<br /><br />
+
+            Our Offer:<br />
+            - We will pay you $1.00 per 5 minutes of work.<br />
+            - We will pay you for every kill. $1 - Coyote, $2 - Cougar, and $3 - Bear.<br />
+            - You can keep and sell all of the bodies and pelts.<br />
+            - We will not provide any weapons or ammo.<br /><br />
+
+            Do you agree to these terms?
+        </div>
+        <div class='contract-footer'>            
+            <input type='button' value='REJECT' onclick='hunter.close();' />
+            <input type='button' value='ACCEPT' onclick='hunter.acceptOffer();' /> 
+        </div>
     </div>
 
     <div id='lawman'>
         <div class='content'>
-            <div class='navbar' style='border: 1px solid #000;'>
-                Sheriff's Office<br />
-                <a href='#' onclick='lawman.openTab(0);'>Persons</a> | <a href='#' onclick='lawman.openTab(1);'>Arrests</a> | <a href='#' onclick='lawman.openTab(2);'>Warrants</a>
+            <div class='navbar'>
+                <span class='bigger-text'>Sheriff's Office</span><br /><br />
+                <a href='#' onclick='lawman.openTab(0);'>Persons</a> | <a href='#' onclick='lawman.openTab(1);'>Arrests</a> | <a href='#' onclick='lawman.openTab(2);'>Warrants</a> | <a href='#' onclick='lawman.openTab(3);'>Bounties</a>
             </div>
-            <div class='persons tab0' style='border: 1px solid #000;'>
-                <div class='search'>
-                    <input type='text' class='search-text' placeholder='NAME' /><br />
+            <div class='persons tab0'>
+                <div class='search' style='text-align: center; padding: 10px;'>
+                    <input type='text'class='search-firstname' placeholder='FIRST NAME' />
+                    <input type='text'  class='search-lastname' placeholder='LAST NAME' />
                     <input type='button' value='SEARCH PERSONS' onclick='lawman.searchPersons();' />
                 </div>
-                <div class='search-results'>
+                <div class='search-results' class='padded-container'>
                 </div>
                 <div class='selected'>
-                    NAME: <span class='name'></span><br />
-                    ADDRESS: <span class='name'></span><br /><br />
-                    WANTED: NOT WANTED<br />
-                    ARRESTS:<br />
-                    <div class='persons-arrests'></div>
+                    <div class='left-panel'>
+                        <div class='height150'>
+                            <span class='big-text'>NAME</span><br />
+                            <span class='name'>TERRY MOWEN</span><br /><br />
+                        </div>
+                        <div class='height150'>
+                            <span class='big-text'>WARRANTS</span><br />
+                            NOT WANTED<br /><br />    
+                        </div>
+                    </div>
+                    <div class='right-panel'>
+                        <div class='height150'>
+                            <span class='big-text'>NOTES</span><br />
+                            <input type='text' placeholder='ENTER NOTE' /><br />
+                            NO NOTES<br /><br />
+                        </div>
+                        <div class='height150'>
+                            <span class='big-text'>ARRESTS</span><br />
+                            NO ARRESTS<br /><br />
+                        </div>
+                    </div>                    
                 </div>
             </div>
-            <div class='arrests tab1' style='border: 1px solid #000;'>
-                <div class='search'>
-                    <input type='text' class='search-case' placeholder='CASE NUMBER' /> <input type='text' class='search-name' placeholder='NAME' /><br />
-                    <input type='button' value='SEARCH ARRESTS' />
+            <div class='arrests tab1'>
+                <div class='search' class='padded-center'>
+                    <input type='text' class='search-case' placeholder='CASE NUMBER' /> 
+                    <input type='text' class='search-firstname' placeholder='FIRST NAME' />
+                    <input type='text' class='search-lastname' placeholder='LAST NAME' />
+                    <input type='button' value='SEARCH ARRESTS' /> | 
+                    <input type='button' value='NEW ARREST' />
                 </div>
-                <div class='search-results'>
+                <div class='search-results' class='padded-container'>
                 </div>
                 <div class='selected'>
                     NAME: <span class='name'></span><br />
@@ -60,10 +132,13 @@
                     ARREST NOTES: <span class='arrest-notes'></span>
                 </div>
             </div>
-            <div class='warrants tab2' style='border: 1px solid #000;'>
-                <div class='search'>
-                    <input type='text' class='search-case' placeholder='CASE NUMBER' /> <input type='text' class='search-text' placeholder='TEXT' /><br />
-                    <input type='button' value='SEARCH ARRESTS' />
+            <div class='warrants tab2'>
+                <div class='search' class='padded-center'>
+                    <input type='text' class='search-case' placeholder='CASE NUMBER' /> 
+                    <input type='text' class='search-firstname' placeholder='FIRST NAME' />
+                    <input type='text' class='search-lastname' placeholder='LAST NAME' />
+                    <input type='button' value='SEARCH WARRANTS' /> | 
+                    <input type='button' value='NEW WARRANT' />
                 </div>
                 <div class='search-results'>
                 </div>
@@ -71,11 +146,23 @@
                     WARRANT NOTES:  <span class='warrant-notes'></span>
                 </div>
             </div>
+            <div class='bounties tab3'>
+                <div class='search' class='padded-center'>
+                    <input type='text' class='search-firstname' placeholder='FIRST NAME' />
+                    <input type='text' class='search-lastname' placeholder='LAST NAME' />
+                    <input type='button' value='SEARCH BOUNTIES' />
+                </div>
+                <div class='search-results'>
+                </div>
+                <div class='selected'>
+                    WARRANT NOTES:  <span class='warrant-notes'></span>
+                </div>
+            </div>            
         </div>
     </div>
 
     <div id='moonshiner'>
-
+        
     </div>
     
     <!-- dialogs -->

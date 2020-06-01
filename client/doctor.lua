@@ -30,6 +30,12 @@ end)
 Helpers.PacketHandler('doctor:TreatPlayer', function(data)
     Doctor.TreatPlayer(data.Revive, data.Coords)
 end)
+
+-- Nui Callbacks
+RegisterNUICallback('doctor:Start', function(data, cb)
+    Helpers.Packet('doctor:GoOnDuty', { LocationId = Doctor.Closest.Index })
+end)
+
 -- Class Functions
 
 -- We need to initialize the blips and the prompts
@@ -60,16 +66,10 @@ end
 
 -- Clear all the prompts used for this job
 function Doctor.ClearPrompts()
-    if (Doctor.IsBuyPromptActive or Doctor.IsCheckInPromptActive or Doctor.IsDutyPromptActive or Doctor.IsOffDutyPromptActive) then
-        Doctor.IsBuyPromptActive = false
-        Doctor.IsCheckInPromptActive = false
-        Doctor.IsDutyPromptActive = false
-        Doctor.IsOffDutyPromptActive = false
-        Helpers.SetPromptActive(Doctor.BuyBandagePrompt, false)
-        Helpers.SetPromptActive(Doctor.CheckInPrompt, false)
-        Helpers.SetPromptActive(Doctor.OnDutyPrompt, false)
-        Helpers.SetPromptActive(Doctor.OffDutyPrompt, false)
-    end
+    Helpers.SetPromptActive(Doctor.BuyBandagePrompt, false)
+    Helpers.SetPromptActive(Doctor.CheckInPrompt, false)
+    Helpers.SetPromptActive(Doctor.OnDutyPrompt, false)
+    Helpers.SetPromptActive(Doctor.OffDutyPrompt, false)
 end
 
 -- Tick tock
@@ -117,8 +117,7 @@ function Doctor.HandleOffDuty(playerPed, playerCoords)
         -- if we're close enough to buy marker, let's show the prompt
         if (Doctor.Closest.Distance < 1.0) then
             Helpers.Prompt(Doctor.OnDutyPrompt, function()
-                Helpers.Packet('doctor:GoOnDuty', { LocationId = Doctor.Closest.Index })
-                Doctor.IsOnDuty = true                
+                Helpers.OpenUI('doctor', nil)
             end)
         else
             -- cancel prompt if we ran too far away

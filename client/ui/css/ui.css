@@ -1,3 +1,8 @@
+@font-face {
+    font-family: ChineseRocks;
+    src: url('../fonts/chineserocksrg.ttf');
+}
+
 #bountyhunter {
     display: none;
     
@@ -14,7 +19,9 @@
     background-image: url('../images/woodpanels.jpg');
     background-repeat: no-repeat;
     background-size: 900px 600px; 
+    text-align: center;
 }
+
 #bountyhunter .posting {
     background-image: url('../images/wanted.jpg');
     background-repeat: no-repeat;
@@ -40,18 +47,87 @@
 
 #delivery {
     display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -275px;
+    margin-left: -325px;
+
+    width: 550px;
+    height: 650px;
+    color: #000;
+
+    background-image: url('../images/oldparchmentbg.jpg');
+    background-repeat: no-repeat;
+    background-size: 550px 650px;     
+    font-family: ChineseRocks;
+}
+
+#delivery input[type=button],
+#doctor input[type=button],
+#hunter input[type=button],
+#lawman input[type=button],
+#lawman input[type=text]  {
+    font-size: 1.2em; 
+    font-family: ChineseRocks; 
+    padding: 3px; 
+    background-color: transparent; 
+    border-radius: 5px; 
+    border: solid 5px #333;
 }
 
 #doctor {
     display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -275px;
+    margin-left: -325px;
+
+    width: 550px;
+    height: 650px;
+    color: #000;
+
+    background-image: url('../images/oldparchmentbg.jpg');
+    background-repeat: no-repeat;
+    background-size: 550px 650px;     
+    font-family: ChineseRocks;
 }
 
 #fisher {
     display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -275px;
+    margin-left: -325px;
+
+    width: 550px;
+    height: 650px;
+    color: #000;
+
+    background-image: url('../images/oldparchmentbg.jpg');
+    background-repeat: no-repeat;
+    background-size: 550px 650px;     
+    font-family: ChineseRocks;
 }
 
 #hunter {
     display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -275px;
+    margin-left: -325px;
+
+    width: 550px;
+    height: 650px;
+    color: #000;
+
+    background-image: url('../images/oldparchmentbg.jpg');
+    background-repeat: no-repeat;
+    background-size: 550px 650px;     
+    font-family: ChineseRocks;
 }
 
 #lawman {
@@ -70,13 +146,14 @@
     background-image: url('../images/oldparchmentbg.jpg');
     background-repeat: no-repeat;
     background-size: 900px 600px;     
+    font-family: ChineseRocks;
 }
 
 #lawman .navbar {
     height: 20px;
     text-align:center;
     font-size: 1.3em;
-    margin-bottom: 30px;
+    margin-bottom: 75px;
 }
 #lawman .navbar a {
     text-decoration: none;
@@ -95,6 +172,20 @@
 
 #moonshiner {
     display: none;
+    
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -300px;
+    margin-left: -450px;
+
+    width: 900px;
+    height: 600px;
+    color: #000;
+
+    background-image: url('../images/woodpanels.jpg');
+    background-repeat: no-repeat;
+    background-size: 900px 600px; 
 }
 
 #messageDialog {
@@ -156,4 +247,65 @@
     left:50%;
     margin-left:-40px;
     display: none;
+}
+
+.contract-footer {
+    width: 100%; 
+    text-align: center; 
+    position: absolute; 
+    bottom: 20px;
+}
+
+.left-panel {
+    display: inline-block; 
+    width: 45%; 
+    vertical-align: top; 
+    margin-left: 25px; 
+    margin-top: 25px;
+}
+
+.right-panel {
+    display: inline-block;
+    width: 45%; 
+    vertical-align: top;
+    margin-top: 25px;
+}
+
+.height150 {
+    height: 150px;
+}
+
+.big-text {
+    font-size: 1.2em;
+}
+.bigger-text {
+    font-size: 1.4em;
+}
+
+.padded-container {
+    width: 96%; 
+    padding: 20px;
+}
+
+.padded-center {
+    text-align: center !important;
+    padding: 10px;
+}
+
+.search-results {
+    text-align: center;
+    padding: 10px;
+    width: 96%;
+    overflow-y: auto;
+    height: 400px;
+}
+
+.person-search-result {
+    vertical-align: top;
+    display: inline-block; 
+    width: 150px; 
+    height: 55px;
+    border: 2px solid #000;
+    border-radius: 5px;
+    padding: 2px;
 }

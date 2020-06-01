@@ -58,7 +58,7 @@ function BountyHunter.CreateLocalBounty(locationId)
     location.BountyCount = location.BountyCount + 1
     BountyHunter.NextAvailableBountyId = BountyHunter.NextAvailableBountyId + 1 
 
-    print('added bounty ' .. BountyHunter.NextAvailableBountyId .. ' for ' .. firstName .. ' ' .. lastName .. ' charged with ' .. tostring(crime.Name) .. ' with $' .. tostring(crime.Reward) .. ' reward in ' .. tostring(location.Name) .. ' last known location index ' .. tostring(bountyLocation.Id))
+    --print('added bounty ' .. BountyHunter.NextAvailableBountyId .. ' for ' .. firstName .. ' ' .. lastName .. ' charged with ' .. tostring(crime.Name) .. ' with $' .. tostring(crime.Reward) .. ' reward in ' .. tostring(location.Name) .. ' last known location index ' .. tostring(bountyLocation.Id))
 
     -- build the data table to store and store it
     local data = {
@@ -70,7 +70,7 @@ function BountyHunter.CreateLocalBounty(locationId)
         Crime = crime,
         IsUsedBy = -1
     }
-    table.insert(location.Bounties, data)
+    location.Bounties[BountyHunter.NextAvailableBountyId] = data
 end
 
 function BountyHunter.GetAvailableLocation(location)
@@ -103,9 +103,8 @@ function BountyHunter.GetBoard(playerId, locationId)
 
     local bounties = {}
     for k, v in pairs(location.Bounties) do
-        if (not bounties.IsUsedBy or bounties.IsUsedBy == -1) then
+        if (v.IsUsedBy == -1) then
             table.insert(bounties, v)
-            print('inserted bounty to getboard')
         end
     end
     
@@ -115,6 +114,12 @@ end
 function BountyHunter.SelectBounty(playerId, locationId, bountyId)
     local location = BountyHunter.Locations[locationId]
     if (location == nil) then
+        return
+    end
+
+    -- only allow one bounty per person at a time
+    if (BountyHunter.Datas[playerId]) then
+        Helpers.Respond(playerId, '^1You can only do one bounty at a time.')
         return
     end
 
@@ -141,7 +146,7 @@ function BountyHunter.SelectBounty(playerId, locationId, bountyId)
             BountyHunter.Datas[playerId] = {
                 BountyId = bountyId,
                 LocationId = locationId
-            }
+            }            
         else
             Helpers.Respond(playerId, '^1You have to be at least level 2 in order to be a bounty hunter.')
         end    
@@ -166,4 +171,7 @@ function BountyHunter.CompleteBounty(playerId)
 end
 
 function BountyHunter.OnPlayerDropped(playerId)
+    if (BountyHunter.Datas[playerId] ~= nil) then
+        BountyHunter.Datas[playerId] = nil
+    end
 end

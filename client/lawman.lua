@@ -10,6 +10,31 @@ Helpers.PacketHandler('lawman:SetDuty', function(data)
     Helpers.CancelPrompt(Lawman.OffDutyPrompt)
 end)
 
+Helpers.PacketHandler('lawman:OnSearchPersons', function(data)
+    Lawman.OnSearchPersons(data.Results)
+end)
+
+Helpers.PacketHandler('lawman:OnSearchArrests', function(data)
+    Lawman.OnSearchArrests(data.Results)
+end)
+
+Helpers.PacketHandler('lawman:OnSearchWarrants', function(data)
+    Lawman.OnSearchWarrants(data.Results)
+end)
+
+-- UI Handlers
+RegisterNUICallback('SearchPersons', function(data, cb)
+    Lawman.SearchPersons(data.FirstName, data.LastName)
+end)
+
+RegisterNUICallback('SearchArrests', function(data, cb)
+    Lawman.SearchArrests(data.CaseNumber, data.FirstName, data.LastName)
+end)
+
+RegisterNUICallback('SearchWarrants', function(data, cb)
+    Lawman.SearchWarrants(data.CaseNumber, data.FirstName, data.LastName)
+end)
+
 -- Class Functions
 function Lawman.Initialize()
     Lawman.SetupBlips()
@@ -211,4 +236,28 @@ function Lawman.ProcessPrompts(playerPed, playerCoords)
             Lawman.CuffPrompt = nil
         end            
     end
+end
+
+function Lawman.SearchPersons(firstName, lastName)
+    Helpers.Packet('lawman:SearchPersons', { FirstName = firstName, LastName = lastName })
+end
+
+function Lawman.OnSearchPersons(data)
+    Helpers.MessageUI('lawman', 'onSearchPersons', data)
+end
+
+function Lawman.SearchArrests(caseNumber, firstName, lastName)
+    Helpers.Packet('lawman:SearchArrests', { CaseNumber = caseNumber, FirstName = firstName, LastName = lastName })
+end
+
+function Lawman.OnSearchArrests(data)
+    Helpers.MessageUI('lawman', 'onSearchArrests', data)
+end
+
+function Lawman.SearchWarrants(caseNumber, firstName, lastName)
+    Helpers.Packet('lawman:SearchWarrants', { CaseNumber = caseNumber, FirstName = firstName, LastName = lastName })
+end
+
+function Lawman.OnSearchWarrants(data)
+    Helpers.MessageUI('lawman', 'onSearchWarrants', data)
 end

@@ -10,6 +10,11 @@ Helpers.PacketHandler('hunter:SetDuty', function(data)
     Helpers.CancelPrompt(Hunter.OffDutyPrompt)
 end)
 
+-- Nui Callbacks
+RegisterNUICallback('hunter:Start', function(data, cb)
+    Helpers.Packet('hunter:GoOnDuty', { LocationId = Hunter.CurrentLocation.Id })
+end)
+
 -- Class Functions
 function Hunter.Initialize()
     Hunter.SetupBlips()
@@ -68,22 +73,32 @@ function Hunter.HandleOffDuty(playerPed, playerCoords)
         return
     end
 
+    Hunter.ProcessOnDutyMarker(playerCoords)
+end
+
+function Hunter.HandleOnDuty(playerPed, playerCoords)    
+    Hunter.ProcessOffDutyMarker(playerCoords)
+
+    -- deal with spawning predators
+    Hunter.HandlePredators(playerPed, playerCoords)
+end
+
+function Hunter.ProcessOnDutyMarker(playerCoords)
     -- draw duty marker
-    local distanceToDuty = Helpers.GetDistance(playerCoords, Hunter.CurrentLocation.Coords)
-    if (distanceToDuty < 5.0) then
+    local distance = Helpers.GetDistance(playerCoords, Hunter.CurrentLocation.Coords)
+    if (distance < 5.0) then
         Helpers.DrawMarker(Hunter.CurrentLocation.Coords, Colors.Marker)
 
         -- if we're close enough to handle some promptness, do it
-        if (distanceToDuty < 1.0) then
+        if (distance < 1.0) then
             Hunter.HasDutyPrompt = true
             -- handle prompt for duty
             Helpers.Prompt(Hunter.OnDutyPrompt, function()
-                -- ask the server to go on duty
-                Helpers.Packet('hunter:GoOnDuty', { LocationId = Hunter.CurrentLocation.Id })
+                Helpers.OpenUI('hunter', nil)                
             end)
         else
             -- clear duty prompt
-            if (distanceToDuty > 1.5 and Hunter.HasDutyPrompt) then                
+            if (distance > 1.5 and Hunter.HasDutyPrompt) then                
                 Hunter.HasDutyPrompt = false
                 Helpers.CancelPrompt(Hunter.OnDutyPrompt)
             end
@@ -91,15 +106,29 @@ function Hunter.HandleOffDuty(playerPed, playerCoords)
     end
 end
 
-function Hunter.HandleOnDuty(playerPed, playerCoords)
-    -- go off duty if too far away
-    if (Hunter.Closest.Distance > 250.0) then
-        Helpers.Packet('hunter:GoOffDuty')
-        return
-    end
+function Hunter.ProcessOffDutyMarker(playerCoords)
+    -- draw duty marker
+    local distance = Helpers.GetDistance(playerCoords, Hunter.CurrentLocation.Coords)
+    if (distance < 5.0) then
+        Helpers.DrawMarker(Hunter.CurrentLocation.Coords, Colors.Marker)
 
-    -- deal with spawning predators
-    Hunter.HandlePredators(playerPed, playerCoords)
+        -- if we're close enough to handle some promptness, do it
+        if (distance < 1.0) then
+            Hunter.HasOffDutyPrompt = true
+
+            -- handle prompt for duty
+            Helpers.Prompt(Hunter.OffDutyPrompt, function()
+                -- ask the server to go off duty
+                Helpers.Packet('hunter:GoOffDuty', { LocationId = Hunter.Closest.Index })
+            end)
+        else
+            -- clear duty prompt
+            if (distance > 1.5 and Hunter.HasOffDutyPrompt) then                
+                Hunter.HasOffDutyPrompt = false
+                Helpers.CancelPrompt(Hunter.OffDutyPrompt)
+            end
+        end            
+    end
 end
 
 function Hunter.HandlePredators(playerPed, playerCoords)

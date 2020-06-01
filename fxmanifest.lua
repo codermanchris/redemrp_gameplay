@@ -4,6 +4,8 @@ version '0.0.1'
 rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
 
 server_scripts {
+    '@mysql-async/lib/MySQL.lua',
+    
     'config.lua',
     'server/_helpers.lua',
     'server/players.lua',
@@ -35,6 +37,7 @@ ui_page 'client/ui/ui.html'
 files {
     -- 3rd party
     'client/ui/js/3rdParty/radialprogress.js',
+    'client/ui/fonts/chineserocksrg.ttf',
 
     -- redemrp_gameplay
     'client/ui/ui.html',
