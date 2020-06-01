@@ -15,6 +15,10 @@ These jobs are a work in progress. If you want to see these jobs in action, we h
   * Hunter **[ALMOST DONE, NEEDS MORE LOCATIONS, SOME TWEAKING]**
   * Lawman **[ALMOST DONE, WORKING ON "MDT" PAPERWORK SYSTEM.]**
   * Moonshiner **[INCOMPLETE]**
+  * Auction Yard **[INCOMPLETE]**
+  * Miner **[INCOMPLETE]**
+  * Lumberjack **[INCOMPLETE]**
+  * Farmhand **[INCOMPLETE]**
 * Gameplay
   * General Store **[SELLS CHEESE, FEED IT TO YOUR HORSE]**
    
