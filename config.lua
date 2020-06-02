@@ -161,6 +161,36 @@ Farmhand = {
                 [12] = { Id = 12, Coords = vector3(-235.35, 666.32, 113.3), Value = 0, MaxValue = 3 },
                 [13] = { Id = 13, Coords = vector3(-224.65, 655.9, 113.32), Value = 0, MaxValue = 3 },
                 [14] = { Id = 14, Coords = vector3(-222.82, 654.35, 113.32), Value = 0, MaxValue = 3 },
+            },
+            SupplyDropOffs = {
+                [1] = { Id = 1, Coords = vector3(-255.75, 646.17, 113.4), Value = 0, MaxValue = 8 },
+                [2] = { Id = 2, Coords = vector3(-281.92, 653.78, 113.24), Value = 0, MaxValue = 8 },
+                [3] = { Id = 3, Coords = vector3(-263.13, 686.72, 113.3), Value = 0, MaxValue = 8 },
+                [4] = { Id = 4, Coords = vector3(-249.38, 685.63, 113.33), Value = 0, MaxValue = 8 },
+            },
+
+            HayDropOffs = {
+                [1] = { Id = 1, Coords = vector3(-275.02, 663.35, 113.41), Value = 0, MaxValue = 3 },
+                [2] = { Id = 2, Coords = vector3(-273.9, 681.59, 113.41), Value = 0, MaxValue = 2 },
+                [3] = { Id = 3, Coords = vector3(-276.54, 679.08, 113.51), Value = 0, MaxValue = 2 },
+                [4] = { Id = 4, Coords = vector3(-277.84, 675.48, 113.41), Value = 0, MaxValue = 3 },
+                [5] = { Id = 5, Coords = vector3(-286.22, 681.93, 113.55), Value = 0, MaxValue = 6 },
+                [6] = { Id = 6, Coords = vector3(-284.26, 685.08, 113.58), Value = 0, MaxValue = 2 },
+                [7] = { Id = 7, Coords = vector3(-281.9, 687.29, 113.63), Value = 0, MaxValue = 2 },
+                [8] = { Id = 8, Coords = vector3(-273.35, 697.33, 113.52), Value = 0, MaxValue = 4 },
+                [9] = { Id = 9, Coords = vector3(-271.84, 699.84, 113.51), Value = 0, MaxValue = 2 },
+                [10] = { Id = 10, Coords = vector3(-269.25, 703.16, 113.65), Value = 0, MaxValue = 4 },
+                [11] = { Id = 11, Coords = vector3(-261.37, 696.68, 113.45), Value = 0, MaxValue = 6 },
+                [12] = { Id = 12, Coords = vector3(-264.06, 693.72, 113.41), Value = 0, MaxValue = 2 },
+                [13] = { Id = 13, Coords = vector3(-266.23, 691.54, 113.54), Value = 0, MaxValue = 3 },
+                [14] = { Id = 14, Coords = vector3(-253.76, 644.59, 113.39), Value = 0, MaxValue = 8 },
+                [15] = { Id = 15, Coords = vector3(-231.71, 646.64, 113.37), Value = 0, MaxValue = 2 },
+                [16] = { Id = 16, Coords = vector3(-231.86, 655.82, 113.3), Value = 0, MaxValue = 2 },
+                [17] = { Id = 17, Coords = vector3(-242.79, 657.78, 113.33), Value = 0, MaxValue = 1 },
+                [18] = { Id = 18, Coords = vector3(-244.13, 671.13, 113.32), Value = 0, MaxValue = 8 },
+                [19] = { Id = 19, Coords = vector3(-227.99, 671.26, 113.32), Value = 0, MaxValue = 2 },
+                [20] = { Id = 20, Coords = vector3(-239.87, 682.88, 113.34), Value = 0, MaxValue = 4 },
+                [21] = { Id = 21, Coords = vector3(-249.96, 692.52, 113.33), Value = 0, MaxValue = 3 },
             }
         }
     }
