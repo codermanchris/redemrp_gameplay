@@ -263,9 +263,9 @@ end
 
 function Doctor.UseBandage(healAmount)
     -- todo
-    -- add some progress bar on the ui 
-    
+    -- add some progress bar on the ui     
     Helpers.MessageUI('core', 'initProgressBar', { Rate = 0.2 }) -- takes 5 seconds so 20 per ticks
+    
     -- wait 5 seconds and then heal the player a little bit
     SetTimeout(5000, function()
         local playerPed = PlayerPedId()

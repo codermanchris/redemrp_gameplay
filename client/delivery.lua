@@ -308,11 +308,10 @@ function Delivery.SpawnWagon()
     end
     
     local spawnCoords = Delivery.CurrentLocation.VehicleCoords
-    local wagonHash = GetHashKey("CART01")
 
     -- load model
-    RequestModel(wagonHash)
-    while not HasModelLoaded(wagonHash) do
+    RequestModel(VehicleHashes.Cart1)
+    while not HasModelLoaded(VehicleHashes.Cart1) do
         Citizen.Wait(0)
     end
 
@@ -322,10 +321,10 @@ function Delivery.SpawnWagon()
     end
 
     -- create wagon
-    Delivery.WagonEntity = CreateVehicle(wagonHash, spawnCoords.x, spawnCoords.y, spawnCoords.z, spawnCoords.w, true, false)
+    Delivery.WagonEntity = CreateVehicle(VehicleHashes.Cart1, spawnCoords.x, spawnCoords.y, spawnCoords.z, spawnCoords.w, true, false)
     SetVehicleOnGroundProperly(Delivery.WagonEntity)
     --SetPedIntoVehicle(playerPed, Delivery.WagonEntity, -1)
-    SetModelAsNoLongerNeeded(wagonHash)
+    SetModelAsNoLongerNeeded(VehicleHashes.Cart1)
 
     -- set datas
     Delivery.WagonCountText = '0/3'

@@ -3,7 +3,9 @@ GameplayConfig = {
     UseBountyHunter = true,
     UseDelivery = true,
     UseDoctor = true,
+    UseFarmhand = true,
     UseFisher = true,
+    UseGeneralStore = true,
     UseHunter = true,
     UseLawman = true,
     UseMoonshiner = true,
@@ -129,6 +131,37 @@ Doctor = {
             Coords = vector3(-288.74, 811.24, 119.39),
             BuyCoords = vector3(-285.94, 804.73, 119.39),
             CheckInCoords = vector3(-288.07, 807.65, 119.39)
+        }
+    }
+}
+
+Farmhand = {
+    Locations = {
+        [1] = {
+            Id = 1,
+            Name = 'Valentine Auction Yard',
+            Coords = vector3(-262.39, 670.64, 113.29),
+            WaterCoords = vector3(-265.13, 668.31, 113.29),
+            SuppliesCoords = vector3(-259.34, 655.23, 113.36),
+            HayCoords = vector3(-290.6, 689.0, 113.4),
+            EggsCoords = vector3(-247.76, 674.51, 114.12),
+
+            WaterDropOffs = {
+                [1] = { Id = 1, Coords = vector3(-249.65, 653.33, 113.34), Value = 0, MaxValue = 3 },
+                [2] = { Id = 2, Coords = vector3(-235.97, 641.32, 113.35), Value = 0, MaxValue = 3 },
+                [3] = { Id = 3, Coords = vector3(-237.15, 639.11, 113.34), Value = 0, MaxValue = 3 },
+                [4] = { Id = 4, Coords = vector3(-239.05, 635.5, 113.33), Value = 0, MaxValue = 3 },
+                [5] = { Id = 5, Coords = vector3(-240.57, 633.57, 113.27), Value = 0, MaxValue = 3 },
+                [6] = { Id = 6, Coords = vector3(-247.8, 628.63, 113.52), Value = 0, MaxValue = 3 },
+                [7] = { Id = 7, Coords = vector3(-264.64, 642.82, 113.45), Value = 0, MaxValue = 3 },
+                [8] = { Id = 8, Coords = vector3(-268.47, 638.48, 113.46), Value = 0, MaxValue = 3 },
+                [9] = { Id = 9, Coords = vector3(-277.66, 681.95, 113.41), Value = 0, MaxValue = 3 },
+                [10] = { Id = 10, Coords = vector3(-220.73, 668.4, 113.34), Value = 0, MaxValue = 3 },
+                [11] = { Id = 11, Coords = vector3(-237.21, 664.39, 113.29), Value = 0, MaxValue = 3 },
+                [12] = { Id = 12, Coords = vector3(-235.35, 666.32, 113.3), Value = 0, MaxValue = 3 },
+                [13] = { Id = 13, Coords = vector3(-224.65, 655.9, 113.32), Value = 0, MaxValue = 3 },
+                [14] = { Id = 14, Coords = vector3(-222.82, 654.35, 113.32), Value = 0, MaxValue = 3 },
+            }
         }
     }
 }
@@ -576,6 +609,60 @@ LastNames = {
     'Lipe',
     'Godoy',
     'Gelinas'
+}
+
+EntityHashes = {
+    Campfire = GetHashKey("S_CAMPFIRECOMBINED01X")
+}
+
+VehicleHashes = {
+    Cart1 = GetHashKey('CART01'),
+    Cart2 = GetHashKey('CART02'),
+    Cart3 = GetHashKey('CART03'),
+    Cart4 = GetHashKey('CART04'),
+    Cart5 = GetHashKey('CART05'),
+    Cart6 = GetHashKey('CART06'),
+    Cart7 = GetHashKey('CART07'),
+    Cart8 = GetHashKey('CART08'),
+    ArmySupplyWagon = GetHashKey('ARMYSUPPLYWAGON'),
+    Buggy1 = GetHashKey('BUGGY01'),
+    Buggy2 = GetHashKey('BUGGY02'),
+    Buggy3 = GetHashKey('BUGGY03'),
+    ChuckWagon1 = GetHashKey('CHUCKWAGON000X'),
+    ChuckWagon2 = GetHashKey('CHUCKWAGON002X'),
+    Coach2 = GetHashKey('COACH2'),
+    Coach3 = GetHashKey('COACH3'),
+    Coach4 = GetHashKey('COACH4'),
+    Coach5 = GetHashKey('COACH5'),
+    Coach6 = GetHashKey('COACH6'),
+    CoalWagon = GetHashKey('coal_wagon'),
+    OilWagon = GetHashKey('OILWAGON01X'),
+    PoliceWagon = GetHashKey('POLICEWAGON01X'),
+    Wagon2 = GetHashKey('WAGON02X'),
+    Wagon4 = GetHashKey('WAGON04X'),
+    LogWagon = GetHashKey('LOGWAGON'),
+    Wagon3 = GetHashKey('WAGON03X'),
+    Wagon5 = GetHashKey('WAGON05X'),
+    Wagon6 = GetHashKey('WAGON06X'),
+    PrisonerWagon = GetHashKey('WAGONPRISON01X'),
+    StageCoach1 = GetHashKey('STAGECOACH001X'),
+    StageCoach2 = GetHashKey('STAGECOACH002X'),
+    StageCoach3 = GetHashKey('STAGECOACH003X'),
+    StageCoach4 = GetHashKey('STAGECOACH004X'),
+    StageCoach5 = GetHashKey('STAGECOACH005X'),
+    StageCoach6 = GetHashKey('STAGECOACH006X'),
+    UtilityWagon = GetHashKey('UTILLIWAG'),
+    GatChuckWagon1 = GetHashKey('GATCHUCK'),
+    GatChuckWagon2 = GetHashKey('GATCHUCK_2'),
+    CircusWagon = GetHashKey('wagonCircus01x'),
+    DairyWagon = GetHashKey('wagonDairy01x'),
+    WorkWagon = GetHashKey('wagonWork01x'),
+    TravellerWagon = GetHashKey('wagonTraveller01x'),
+    SupplyWagon = GetHashKey('supplywagon'),
+    Caboose = GetHashKey('CABOOSE01X'),
+    NorthPassenger1 = GetHashKey('northpassenger01x'),
+    NorthSteamer = GetHashKey('NORTHSTEAMER01X'),
+    HandCart = GetHashKey('HANDCART')    
 }
 
 BountyPeds = {
@@ -1359,7 +1446,6 @@ Controls = {
     ScriptedFlyZdown = 0x9C5E030C,
     Count = 0x8EDFFB30    
 }
-
 
 BlipSpriteType = {
     AdversaryLarge = -180188163,

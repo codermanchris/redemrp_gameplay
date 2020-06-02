@@ -55,6 +55,7 @@ var core = {
         core.registerUI("bountyhunter", bountyHunter);
         core.registerUI("delivery", delivery);
         core.registerUI("doctor", doctor);
+        core.registerUI("farmhand", farmhand);
         core.registerUI("fisher", fisher);
         core.registerUI("hunter", hunter);
         core.registerUI("lawman", lawman);

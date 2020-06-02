@@ -1,6 +1,7 @@
 -- Start Gameplay Thread
-Helpers.StartGameplay(GeneralStore)
-
+if (GameplayConfig.UseGeneralStore) then
+    Helpers.StartGameplay(GeneralStore)
+end
 
 -- Class Functions
 function GeneralStore.Initialize()

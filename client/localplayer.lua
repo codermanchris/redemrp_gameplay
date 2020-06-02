@@ -19,7 +19,10 @@ function LocalPlayer.Initialize()
     LocalPlayer.NextBonusAt = GetGameTimer()
 
     -- hide reticule
+    -- note: this also causes the blue circle, gold bars and money icons on top-right of screen to appear
     Citizen.InvokeNative(0x4CC5F2FC1332577F, HudHashes.Reticule)
+
+    -- this shows reticule
     --Citizen.InvokeNative(0x8BC7C1F929D07BF3, HudHashes.Reticule)
 end
 
@@ -165,6 +168,9 @@ function LocalPlayer.ToggleHogtied()
 end
 
 function LocalPlayer.FeedHorse(healAmount, staminaAmount)
+    -- todo:
+    -- make it so you can feed your horse through right click selection and not just while riding it
+
     Helpers.MessageUI('core', 'initProgressBar', { Rate = 0.2 })
     SetTimeout(5000, function()
         local horse = GetMount(PlayerPedId())
@@ -180,4 +186,111 @@ function LocalPlayer.FeedHorse(healAmount, staminaAmount)
         Citizen.InvokeNative(0xC6258F41D86676E0, horse, 0, math.clamp(health + healAmount, 0, 100))
         Citizen.InvokeNative(0xC6258F41D86676E0, horse, 1, math.clamp(stamina + staminaAmount, 0, 100))
     end)
+end
+
+function LocalPlayer.CreateCampfire()
+    -- delete existing entity if we must
+    if (DoesEntityExist(LocalPlayer.CampfireEntity)) then
+        DeleteEntity(LocalPlayer.CampfireEntity)
+    end
+
+    -- create the campfire entity in front of player
+
+end
+
+function LocalPlayer.HandleCampfire()
+    -- get player ped and player coords then validate things
+    local playerPed, playerCoords = Helpers.GetLocalPed()
+    if (LocalPlayer.IsDead or not DoesEntityExist(playerPed) or not DoesEntityExist(LocalPlayer.CampfireEntity)) then
+        return
+    end
+
+    -- get closest campfire to us, if it exists, do things
+    local campfireEntity = GetClosestObjectOfType(playerCoords, 2.0, EntityHashes.Campfire, false, false, false)
+    if (DoesEntityExist(campfireEntity)) then
+        -- get campfire coords
+        local campfireCoords = GetEntityCoords(campfireEntity)
+
+        -- get distance to campfire 
+        local distance = Helpers.GetDistance(playerCoords, campfireCoords)        
+        if (distance < 2.5) then
+            -- set a bool here so we don't spam the go away stuffs
+            LocalPlayer.HasCampfirePrompt = true
+
+            -- handle our prompt and open cooking UI on completion
+            Helpers.Prompt(LocalPlayer.CampfirePrompt, function()
+                Helpers.OpenUI('cooking', nil)
+            end)
+        else
+            -- clear prompt if we need to - 
+            -- note: this is always ticking, so no need to keep re-doing things.
+            if (distance > 2.5 and LocalPlayer.HasCampfirePrompt) then
+                -- no more!
+                LocalPlayer.HasCampfirePrompt = false
+    
+                -- clear the prompt
+                Helpers.CancelPrompt(LocalPlayer.CampfirePrompt)                    
+            end
+        end
+    end
+end
+
+function LocalPlayer.PickupBucket()
+    local playerPed, playerCoords = Helpers.GetLocalPed()
+    if (LocalPlayer.IsDead or not DoesEntityExist(playerPed)) then
+        return
+    end
+
+    if (DoesEntityExist(LocalPlayer.HoldingEntity)) then
+        DeleteEntity(LocalPlayer.HoldingEntity)
+    end
+
+    Citizen.CreateThread(function()
+        local animDict = "script_rc@cldn@ig@rsc2_ig1_questionshopkeeper"
+        RequestAnimDict(animDict)
+        while not HasAnimDictLoaded(animDict) do
+            Citizen.Wait(10)
+        end
+
+        local boneIndex = GetEntityBoneIndexByName(playerPed, "SKEL_R_HAND")
+        local entityHash = GetHashKey("P_CS_BUCKET01X") -- "P_CS_MININGPAN01X")
+
+        while not HasModelLoaded(entityHash) do
+            Citizen.Wait(0)
+            RequestModel(entityHash)
+        end
+
+        LocalPlayer.HoldingEntity = CreateObject(entityHash, 0.0, 0.0, 0.0, true, false, false)
+        SetEntityVisible(LocalPlayer.HoldingEntity, true)
+        SetEntityAlpha(LocalPlayer.HoldingEntity, 255, false)
+        Citizen.InvokeNative(0x283978A15512B2FE, LocalPlayer.HoldingEntity, true)
+        SetModelAsNoLongerNeeded(entityHash)
+        AttachEntityToEntity(LocalPlayer.HoldingEntity, playerPed, boneIndex, 0.2, 0.0, -0.2, -100.0, -50.0, 0.0, false, false, false, true, 2, true)
+
+        --
+        TaskPlayAnim(playerPed, animDict, "inspectfloor_player", 1.0, 8.0, -1, 1, 0, false, false, false)
+    end)
+end
+
+function LocalPlayer.DropOffBucket()
+    local playerPed, playerCoords = Helpers.GetLocalPed()
+    if (LocalPlayer.IsDead or not DoesEntityExist(playerPed)) then
+        return
+    end
+
+    Citizen.CreateThread(function()
+        local animDict = "script_rc@cldn@ig@rsc2_ig1_questionshopkeeper"
+        RequestAnimDict(animDict)
+        while not HasAnimDictLoaded(animDict) do
+            Citizen.Wait(10)
+        end
+        TaskPlayAnim(playerPed, animDict, "inspectfloor_player", 1.0, 8.0, -1, 1, 0, false, false, false)
+    end)
+end
+
+function LocalPlayer.DeleteBucket()
+    if (DoesEntityExist(LocalPlayer.HoldingEntity)) then
+        DeleteEntity(LocalPlayer.HoldingEntity)
+    end
+    ClearPedTasks(PlayerPedId())
 end
