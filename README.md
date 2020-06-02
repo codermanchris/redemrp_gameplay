@@ -18,7 +18,7 @@ These jobs are a work in progress. If you want to see these jobs in action, we h
   * Auction Yard **[INCOMPLETE]**
   * Miner **[INCOMPLETE]**
   * Lumberjack **[INCOMPLETE]**
-  * Farmhand **[INCOMPLETE]**
+  * Farmhand **[WIP]**
 * Gameplay
   * General Store **[SELLS CHEESE, FEED IT TO YOUR HORSE]**
    
