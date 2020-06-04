@@ -78,24 +78,27 @@ function VehicleRental.HandleVehicle(playerPed, playerCoords)
         local type = GetPedType(holdingPed)
 
         if (DoesEntityExist(holdingPed) and type == 28) then
+
             Helpers.DrawMarker(vehicleCoords, Colors.Marker)
 
             if (distanceToVehicle < 1.0) then
                 Helpers.DrawText3d(vehicleCoords, string.format('Load Animal [%d/%d]', VehicleRental.WagonSupplyCount, VehicleRental.WagonSupplyMaxCount), 1, 1)
 
-                Helpers.Prompt(VehicleRental.LoadPrompt, function()
-                    -- attach the animal to the cart
-                    SetEntityCollision(holdingPed, false, false)
-                    SetEntityVisible(holdingPed, false)
-                    SetEntityAlpha(holdingPed, 0, false)
-                    
-                    AttachEntityToEntity(holdingPed, VehicleRental.WagonEntity, 0, 0.0, 0.0, 0.2, 0.0, 0.0, 0.0, false, false, false, true, 2, true)
-                    
+                if (VehicleRental.WagonSupplyCount < VehicleRental.WagonSupplyMaxCount) then
+                    Helpers.Prompt(VehicleRental.LoadPrompt, function()
+                        -- attach the animal to the cart
+                        SetEntityCollision(holdingPed, false, false)
+                        SetEntityVisible(holdingPed, false)
+                        SetEntityAlpha(holdingPed, 0, false)
+                        
+                        AttachEntityToEntity(holdingPed, VehicleRental.WagonEntity, 0, 0.0, 0.0, 0.2, 0.0, 0.0, 0.0, false, false, false, true, 2, true)
+                        
 
-                    -- insert for later usage
-                    table.insert(VehicleRental.AttachedPeds, { Ped = holdingPed, Quality = quality, Model = model, Type = type })
-                    VehicleRental.WagonSupplyCount = VehicleRental.WagonSupplyCount + 1
-                end)
+                        -- insert for later usage
+                        table.insert(VehicleRental.AttachedPeds, { Ped = holdingPed, Quality = quality, Model = model, Type = type })
+                        VehicleRental.WagonSupplyCount = VehicleRental.WagonSupplyCount + 1
+                    end)
+                end
             else
                 if (distanceToVehicle > 1.5) then
                     Helpers.CancelPrompt(VehicleRental.LoadPrompt)

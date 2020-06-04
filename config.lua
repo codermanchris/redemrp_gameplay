@@ -348,19 +348,67 @@ VehicleRental = {
             Vehicles = {
                 [1] = {
                     Id = 1,
-                    Name = 'Small Cart',
-                    MaxCapacity = 2,
+                    Name = 'Small Work Cart',
+                    MaxCapacity = 3,
                     Hash = GetHashKey('CART01'),
                     Price = 5,
                     ActionOffset = vector3(0.0, -2.0, 0.25)
                 },
                 [2] = {
                     Id = 2,
-                    Name = 'Utility Wagon',
-                    MaxCapacity = 10,
-                    Hash = GetHashKey('UTILLIWAG'),
+                    Name = 'Personal Cart',
+                    MaxCapacity = 0,
+                    Hash = GetHashKey('CART02'),
+                    Price = 7,
+                    ActionOffset = vector3(0.0, -2.0, 0.25)
+                },
+                [3] = {
+                    Id = 3,
+                    Name = 'Medium Work Cart',
+                    MaxCapacity = 6,
+                    Hash = GetHashKey('CART03'),
+                    Price = 10,
+                    ActionOffset = vector3(0.0, -2.0, 0.25)
+                },
+                [4] = {
+                    Id = 4,
+                    Name = 'Tall Work Cart',
+                    MaxCapacity = 6,
+                    Hash = GetHashKey('CART04'),
+                    Price = 10,
+                    ActionOffset = vector3(0.0, -2.65, 0.25)
+                },
+                [5] = {
+                    Id = 5,
+                    Name = 'Barrel Cart',
+                    MaxCapacity = 0,
+                    Hash = GetHashKey('CART05'),
                     Price = 15,
                     ActionOffset = vector3(0.0, -2.65, 0.25)
+                },
+                [6] = {
+                    Id = 6,
+                    Name = 'Large Work Cart',
+                    MaxCapacity = 12,
+                    Hash = GetHashKey('CART06'),
+                    Price = 20,
+                    ActionOffset = vector3(0.0, -3.0, 0.25)
+                },
+                [7] = {
+                    Id = 7,
+                    Name = 'Medium Work Cart 2',
+                    MaxCapacity = 6,
+                    Hash = GetHashKey('CART07'),
+                    Price = 10,
+                    ActionOffset = vector3(0.0, -2.65, 0.25)
+                },
+                [8] = {
+                    Id = 8,
+                    Name = 'Medium Work Cart 3',
+                    MaxCapacity = 6,
+                    Hash = GetHashKey('CART08'),
+                    Price = 10,
+                    ActionOffset = vector3(0.0, -2.0, 0.25)
                 }
             }
         }

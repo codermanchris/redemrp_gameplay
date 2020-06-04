@@ -201,8 +201,16 @@
             There are a few different vehicles you can choose from. Make your selection:<br /><br />
             <div class='rentallineitem' style='margin: 5px;'>
                 <div style='display: inline-block; width: 45%;'>
-                    Small Cart<br />
-                    - Max Animal Capacity: 2 
+                    Personal Cart<br />
+                </div>
+                <div style='display: inline-block; width: 45%; text-align: right;'>
+                    <input type='button' value='RENT - $7' onclick='vehicleRental.rentVehicle(2);' style='width: 150px;' />
+                </div>
+            </div>            
+            <div class='rentallineitem' style='margin: 5px;'>
+                <div style='display: inline-block; width: 45%;'>
+                    Small Work Cart<br />
+                    - Max Animal Capacity: 3
                 </div>
                 <div style='display: inline-block; width: 45%; text-align: right;'>
                     <input type='button' value='RENT - $5' onclick='vehicleRental.rentVehicle(1);' style='width: 150px;' />
@@ -210,16 +218,58 @@
             </div>
             <div class='rentallineitem' style='margin: 5px;'>
                 <div style='display: inline-block; width: 45%;'>
-                    Utility Wagon<br />
-                    - Max Animal Capacity: 10 
+                    Medium Work Cart 1<br />
+                    - Max Animal Capacity: 6
                 </div>
                 <div style='display: inline-block; width: 45%; text-align: right;'>
-                    <input type='button' value='RENT - $15' onclick='vehicleRental.rentVehicle(2);' style='width: 150px;' />
+                    <input type='button' value='RENT - $10' onclick='vehicleRental.rentVehicle(3);' style='width: 150px;' />
                 </div>
             </div>
-        </div>
-        <div class='contract-footer'>            
-            <input type='button' value='CLOSE' onclick='hunter.close();' />             
+            <div class='rentallineitem' style='margin: 5px;'>
+                <div style='display: inline-block; width: 45%;'>
+                    Medium Work Cart 2<br />
+                    - Max Animal Capacity: 6 
+                </div>
+                <div style='display: inline-block; width: 45%; text-align: right;'>
+                    <input type='button' value='RENT - $10' onclick='vehicleRental.rentVehicle(7);' style='width: 150px;' />
+                </div>
+            </div>
+            <div class='rentallineitem' style='margin: 5px;'>
+                <div style='display: inline-block; width: 45%;'>
+                    Medium Work Cart 3<br />
+                    - Max Animal Capacity: 6 
+                </div>
+                <div style='display: inline-block; width: 45%; text-align: right;'>
+                    <input type='button' value='RENT - $10' onclick='vehicleRental.rentVehicle(8);' style='width: 150px;' />
+                </div>
+            </div>             
+            <div class='rentallineitem' style='margin: 5px;'>
+                <div style='display: inline-block; width: 45%;'>
+                    Tall Work Cart<br />
+                    - Max Animal Capacity: 6 
+                </div>
+                <div style='display: inline-block; width: 45%; text-align: right;'>
+                    <input type='button' value='RENT - $10' onclick='vehicleRental.rentVehicle(4);' style='width: 150px;' />
+                </div>
+            </div>
+            <div class='rentallineitem' style='margin: 5px;'>
+                <div style='display: inline-block; width: 45%;'>
+                    Barrel Cart<br />
+                    - Max Liquid Capacity: 50
+                </div>
+                <div style='display: inline-block; width: 45%; text-align: right;'>
+                    <input type='button' value='RENT - $15' onclick='vehicleRental.rentVehicle(5);' style='width: 150px;' />
+                </div>
+            </div>
+            <div class='rentallineitem' style='margin: 5px;'>
+                <div style='display: inline-block; width: 45%;'>
+                    Large Work Cart<br />
+                    - Max Animal Capacity: 12 
+                </div>
+                <div style='display: inline-block; width: 45%; text-align: right;'>
+                    <input type='button' value='RENT - $20' onclick='vehicleRental.rentVehicle(6);' style='width: 150px;' />
+                </div>
+            </div>                                   
         </div>        
     </div>
     
