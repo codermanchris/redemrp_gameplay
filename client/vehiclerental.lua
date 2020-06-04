@@ -69,7 +69,7 @@ function VehicleRental.HandleVehicle(playerPed, playerCoords)
     end
 
     -- load/unload animal into cart
-    local vehicleCoords = GetOffsetFromEntityInWorldCoords(VehicleRental.WagonEntity, 0.0, -2.0, 0.25)
+    local vehicleCoords = GetOffsetFromEntityInWorldCoords(VehicleRental.WagonEntity, VehicleRental.VehicleData.ActionOffset.x, VehicleRental.VehicleData.ActionOffset.y, VehicleRental.VehicleData.ActionOffset.z)
     local distanceToVehicle = Helpers.GetDistance(playerCoords, vehicleCoords)
     if (distanceToVehicle < 5.0) then
         local holdingPed = Citizen.InvokeNative(0xD806CD2A4F2C2996, playerPed)
@@ -209,6 +209,7 @@ function VehicleRental.SpawnWagon(vehicleId)
     VehicleRental.WagonSupplyCount = 0
     VehicleRental.WagonSupplyMaxCount = vehicle.MaxCapacity
     VehicleRental.WagonCountText = string.format('0/%d', vehicle.MaxCapacity)
+    VehicleRental.VehicleData = vehicle
 
     VehicleRental.HasRental = true
 end

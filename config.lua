@@ -351,14 +351,16 @@ VehicleRental = {
                     Name = 'Small Cart',
                     MaxCapacity = 2,
                     Hash = GetHashKey('CART01'),
-                    Price = 5
+                    Price = 5,
+                    ActionOffset = vector3(0.0, -2.0, 0.25)
                 },
                 [2] = {
                     Id = 2,
                     Name = 'Utility Wagon',
                     MaxCapacity = 10,
                     Hash = GetHashKey('UTILLIWAG'),
-                    Price = 15
+                    Price = 15,
+                    ActionOffset = vector3(0.0, -2.65, 0.25)
                 }
             }
         }
