@@ -19,6 +19,8 @@ These jobs are a work in progress. If you want to see these jobs in action, we h
   * Miner **[INCOMPLETE]**
   * Lumberjack **[INCOMPLETE]**
   * Farmhand **[WIP]**
+  * Posse **[WIP]**
+  * Vehicle Rental **[WIP]**
 * Gameplay
   * General Store **[SELLS CHEESE, FEED IT TO YOUR HORSE]**
    
