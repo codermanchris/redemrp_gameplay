@@ -184,13 +184,23 @@
         
     </div>
 
+    <div id='createposse'>
+        In order to create a new posse, you will need to pay $25 and be level 5.<br />
+        If you can handle that, go ahead and create one.<br /><br />
+        <input type='text' id='newpossename' placeholder='POSSE NAME' /><br /><br />
+        <input type='button' value='CANCEL' onclick='posse.closeCreate();' />
+        <input type='button' value='CREATE POSSE' onclick='posse.create();' />
+    </div>
+
     <div id='posse'>
-        <div class='new'>
-            POSSE NAME: 
+        <div class='padded-container'>
+            <h2>Posse</h2>
+            <h3><span id='possename'></span></h3>
+            <h3>Members</h3>
+            <div class='members'>
+
+            </div>
         </div>
-        <div class='existing'>
-            POSSE
-        </div>        
     </div>
 
     <div id='vehiclerental'>

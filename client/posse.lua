@@ -4,8 +4,40 @@ if (GameplayConfig.UsePosse) then
 end
 
 -- Packet Handlers
+Helpers.PacketHandler('posse:OpenCreate', function(data)
+    if (Posse.PosseInfo ~= nil) then
+        return
+    end
+    
+    Helpers.MessageUI('posse', 'showCreate', nil)
+    Helpers.SetUIFocus(true)
+end)
+
 Helpers.PacketHandler('posse:Open', function(data)
-    Helpers.OpenUI('posse', nil)
+    if (Posse.PosseInfo == nil) then
+        return
+    end
+    Helpers.OpenUI('posse', { Posse = Posse.PosseInfo, Members = Posse.PosseMembers, Rank = Posse.PosseRank })
+end)
+
+Helpers.PacketHandler('posse:OnCreate', function(data)
+    Posse.OnCreate(data.Success)
+end)
+
+Helpers.PacketHandler('posse:SetMember', function(data)
+    print('set member in posse ' .. data.PosseId)
+end)
+
+Helpers.PacketHandler('posse:SetMembers', function(data)
+    Posse.PosseInfo = data.Posse
+    Posse.PosseMembers = data.Members
+    Posse.PosseRank = data.Rank
+end)
+
+-- Nui Callbacks
+RegisterNUICallback('posse:Create', function(data, cb)
+    Helpers.Packet('posse:Create', { PosseName = data.posseName })
+    Helpers.CloseUI(true)
 end)
 
 -- Class Functions
@@ -35,4 +67,12 @@ end
 
 function Posse.HandleCivilian()
 
+end
+
+function Posse.OnCreate(success)
+    if (success) then
+        Helpers.CloseUI()
+    else
+        print('failed to create')
+    end
 end

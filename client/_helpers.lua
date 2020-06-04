@@ -217,6 +217,10 @@ function Helpers.MessageUI(target, method, data)
 	SendNUIMessage({ target = target, method = method, data = data })
 end
 
+function Helpers.SetUIFocus(value)
+	SetNuiFocus(value, value)
+end
+
 function Helpers.LoadModel(model)
     while not HasModelLoaded(model) do
         RequestModel(model)        
@@ -239,4 +243,8 @@ end
 -- NUI Callbacks
 RegisterNUICallback('CloseMenu', function(data, cb)
 	Helpers.CloseUI(false)
+end)
+
+RegisterNUICallback('LoseUIFocus', function(data, cb)
+	Helpers.SetUIFocus(false)
 end)
