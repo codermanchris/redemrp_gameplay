@@ -14,6 +14,10 @@ Helpers.PacketHandler('player:FeedHorse', function(data)
     LocalPlayer.FeedHorse(data.Health, data.Stamina)
 end)
 
+Helpers.PacketHandler('player:UseBandage', function(data)
+    LocalPlayer.UseBandage(data.HealAmount)
+end)
+
 -- Class Functions
 function LocalPlayer.Initialize()
     LocalPlayer.NextBonusAt = GetGameTimer()
@@ -41,6 +45,7 @@ function LocalPlayer.Tick()
     -- if the player is restrained, handle it
     if (LocalPlayer.IsCuffed or LocalPlayer.IsHogtied) then
         LocalPlayer.HandleRestrained(playerPed, playerCoords)
+        return
     end
 
     -- handle prompts
@@ -48,6 +53,11 @@ function LocalPlayer.Tick()
 
     -- handle bonus xp
     LocalPlayer.HandleBonusXP()
+
+    -- toggle hands up
+    if (IsControlJustPressed(0, Controls.GameMenuTabRightSecondary))  then
+        LocalPlayer.ToggleHandsUp()
+    end
 end
 
 function LocalPlayer.HandleBonusXP()
@@ -68,6 +78,7 @@ function LocalPlayer.HandlePrompts(playerPed, playerCoords)
             -- get target ped and coords
             local targetPed = GetPlayerPed(targetPlayerId)
             local targetCoords = GetEntityCoords(targetPed)
+            local targetNetworkId = GetPlayerServerId(targetPlayerId)
 
             -- if we're standing close enough, do it
             if (Helpers.GetDistance(playerCoords, targetCoords) < 3.0) then
@@ -80,12 +91,10 @@ function LocalPlayer.HandlePrompts(playerPed, playerCoords)
                 -- handle prompt for paying
                 Helpers.Prompt(LocalPlayer.GiveMoneyPrompt, function()
                     -- open ui to get amount
-                    --Helpers.OpenUI('givemoney', nil)
+                    Helpers.OpenUI('givemoney', nil)
                     
-                    LocalPlayer.GiveMoneyTargetId = targetPlayerId
-
-                    -- for testing
-                    LocalPlayer.GiveMoney(1)
+                    -- we need the target id for later
+                    LocalPlayer.GiveMoneyTargetId = targetNetworkId
                 end)
             end
         else
@@ -110,7 +119,7 @@ function LocalPlayer.GiveMoney(amount)
     LocalPlayer.GiveMoneyTargetId = nil
 
     -- close the ui
-    Helpers.CloseUI()
+    Helpers.CloseUI(true)
 end
 
 function LocalPlayer.HandleRestrained(playerPed, playerCoords)
@@ -293,4 +302,54 @@ function LocalPlayer.DeleteBucket()
         DeleteEntity(LocalPlayer.HoldingEntity)
     end
     ClearPedTasks(PlayerPedId())
+end
+
+function LocalPlayer.StartScenario(scenarioHash)
+    local playerPed, playerCoords = Helpers.GetLocalPed()
+    if (LocalPlayer.IsDead or not DoesEntityExist(playerPed)) then
+        return
+    end
+
+    local heading = GetEntityHeading(playerPed)
+    print('start scenario ' .. tostring(scenarioHash))
+    Citizen.InvokeNative(0x4D1F61FC34AF3CD1, playerPed, scenarioHash, playerCoords.x, playerCoords.y, playerCoords.z, heading, 0, false)
+end
+
+function LocalPlayer.UseBandage(healAmount)
+    Helpers.MessageUI('core', 'initProgressBar', { Rate = 0.2 }) -- takes 5 seconds so 20 per ticks
+    
+    -- wait 5 seconds and then heal the player a little bit
+    SetTimeout(5000, function()
+        local playerPed = PlayerPedId()
+
+        -- get core values
+        local health = Citizen.InvokeNative(0x36731AC041289BB1, playerPed, 0, Citizen.ResultAsInteger())
+        local stamina = Citizen.InvokeNative(0x36731AC041289BB1, playerPed, 1, Citizen.ResultAsInteger())        
+
+        -- set core values
+        Citizen.InvokeNative(0xC6258F41D86676E0, playerPed, 0, math.clamp(health + 50, 0, 100))
+        Citizen.InvokeNative(0xC6258F41D86676E0, playerPed, 1, math.clamp(stamina + 5, 0, 100))
+    end)        
+end
+
+function LocalPlayer.ToggleHandsUp()
+    -- validate player ped
+    local playerPed = PlayerPedId()
+    if (LocalPlayer.IsDead or not DoesEntityExist(playerPed)) then
+        return
+    end
+
+    -- load the animation stuffs
+    local anim = "mech_loco_m@generic@reaction@handsup@unarmed@normal"
+    RequestAnimDict(anim)
+    while (not HasAnimDictLoaded(anim)) do
+        Citizen.Wait(10)
+    end
+
+    -- stop or start
+    if (IsEntityPlayingAnim(playerPed, anim, "loop", 3)) then
+        ClearPedSecondaryTask(playerPed)
+    else
+        TaskPlayAnim(playerPed, anim, "loop", 1.0, 8.0, 10000, 31, 0, true, 0, false, 0, false)
+    end
 end

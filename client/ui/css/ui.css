@@ -67,6 +67,7 @@
 #doctor input[type=button],
 #hunter input[type=button],
 #farmhand input[type=button],
+#vehiclerental input[type=button],
 #lawman input[type=button],
 #lawman input[type=text]  {
     font-size: 1.2em; 
@@ -205,6 +206,42 @@
     background-image: url('../images/woodpanels.jpg');
     background-repeat: no-repeat;
     background-size: 900px 600px; 
+}
+
+#posse {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -275px;
+    margin-left: -325px;
+
+    width: 550px;
+    height: 650px;
+    color: #000;
+
+    background-image: url('../images/oldparchmentbg.jpg');
+    background-repeat: no-repeat;
+    background-size: 550px 650px;     
+    font-family: ChineseRocks;
+}
+
+#vehiclerental {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -275px;
+    margin-left: -325px;
+
+    width: 550px;
+    height: 650px;
+    color: #000;
+
+    background-image: url('../images/oldparchmentbg.jpg');
+    background-repeat: no-repeat;
+    background-size: 550px 650px;     
+    font-family: ChineseRocks;   
 }
 
 #messageDialog {

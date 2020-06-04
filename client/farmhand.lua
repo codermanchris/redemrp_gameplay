@@ -360,7 +360,7 @@ end
 
 function Farmhand.PickupHay()
     if (Farmhand.IsCarryingHay) then
-        print('you already have water.')
+        print('you already have hay.')
         return
     end
 
@@ -370,7 +370,9 @@ function Farmhand.PickupHay()
     -- ui progress
     Helpers.MessageUI('core', 'initProgressBar', { Rate = 0.2 }) -- takes 5 seconds so 20 per ticks
 
-    -- 5 second timer then set as carrying water
+    LocalPlayer.StartScenario(GetHashKey('PROP_HUMAN_ABIGAIL_PIANO'))
+
+    -- 5 second timer then set as carrying hay
     SetTimeout(5000, function()
         Farmhand.BlockInput = false
         Farmhand.IsCarryingHay = true
@@ -386,6 +388,8 @@ function Farmhand.DropOffHay(location)
 
     -- block input
     Farmhand.BlockInput = true
+
+    LocalPlayer.StartScenario(GetHashKey('WORLD_PLAYER_CHORES_BALE_PUT_DOWN_1'))
 
     Helpers.MessageUI('core', 'initProgressBar', { Rate = 0.2 }) -- takes 5 seconds so 20 per ticks
     SetTimeout(5000, function()

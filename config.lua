@@ -9,6 +9,7 @@ GameplayConfig = {
     UseHunter = true,
     UseLawman = true,
     UseMoonshiner = true,
+    UseVehicleRental = true,
 }
 
 -- Color definitions
@@ -20,6 +21,7 @@ Colors = {
 
 -- "Class" definitions
 Helpers = {
+    ItemHandlers = {},
     PacketHandlers = {},
     Prompts = {}
 }
@@ -143,7 +145,8 @@ Farmhand = {
             Coords = vector3(-262.39, 670.64, 113.29),
             WaterCoords = vector3(-265.13, 668.31, 113.29),
             SuppliesCoords = vector3(-259.34, 655.23, 113.36),
-            HayCoords = vector3(-290.6, 689.0, 113.4),
+            HayCoords = vector3(-260.39, 668.67, 113.3),
+            --HayCoords = vector3(-290.6, 689.0, 113.4),
             EggsCoords = vector3(-247.76, 674.51, 114.12),
 
             WaterDropOffs = {
@@ -320,6 +323,46 @@ Lawman = {
 
 Moonshiner = {
     Coords = vector3(1945.58, -681.85, 42.05),
+}
+
+Posse = {
+    Locations = {
+        [1] = { 
+            Id = 1,
+            Name = 'Camp',
+            Coords = vector3(-304.19, 806.46, 118.98),
+            Members = {}
+        }
+    },
+}
+
+VehicleRental = {
+    Rentals = {},
+    AttachedPeds = {},
+    Locations = {
+        [1] = {
+            Id = 1,
+            Name = 'Valentine Wagon Rental',
+            Coords = vector3(-186.63, 644.28, 113.47),
+            VehicleCoords = vector4(-187.33, 649.62, 113.47, 54.19),
+            Vehicles = {
+                [1] = {
+                    Id = 1,
+                    Name = 'Small Cart',
+                    MaxCapacity = 2,
+                    Hash = GetHashKey('CART01'),
+                    Price = 5
+                },
+                [2] = {
+                    Id = 2,
+                    Name = 'Utility Wagon',
+                    MaxCapacity = 10,
+                    Hash = GetHashKey('UTILLIWAG'),
+                    Price = 15
+                }
+            }
+        }
+    }
 }
 
 -- Various config related definitions

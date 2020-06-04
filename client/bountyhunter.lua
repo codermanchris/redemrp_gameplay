@@ -226,7 +226,6 @@ function BountyHunter.HandlePrompts(playerPed, playerCoords)
         if (not BountyHunter.CuffPrompt) then
             local groupId = PromptGetGroupIdForTargetEntity(aimTarget)
             BountyHunter.CuffPrompt = Helpers.RegisterPrompt('Cuff/Uncuff', Controls.Enter, groupId)
-            BountyHunter.HogtiePrompt = Helpers.RegisterPrompt('Hogtie/Untie', Controls.Loot, groupId)
         end
 
         -- get aiming handle and make sure its a player
@@ -234,29 +233,15 @@ function BountyHunter.HandlePrompts(playerPed, playerCoords)
         local isNetworkPlayer = NetworkIsPlayerActive(targetPlayerId)
         -- handle prompt for cuffing
         Helpers.Prompt(BountyHunter.CuffPrompt, function()
-            print('cuff person')
-
             if (isNetworkPlayer) then
                 -- notify server to cuff/uncuff this person
                 Helpers.Packet('player:Cuff', { TargetId = targetPlayerId })
             end
         end)
-
-        -- handle prompt for cuffing
-        Helpers.Prompt(BountyHunter.HogtiePrompt, function()
-            print('hogtie person')
-
-            if (isNetworkPlayer) then
-                -- notify server to hogtie/untie this person
-                Helpers.Packet('player:Hogtie', { TargetId = targetPlayerId })
-            end
-        end)
     else
         if (BountyHunter.CuffPrompt ~= nil) then
             Helpers.RemovePrompt(BountyHunter.CuffPrompt)
-            Helpers.RemovePrompt(BountyHunter.HogtiePrompt)
             BountyHunter.CuffPrompt = nil
-            BountyHunter.HogtiePrompt = nil
         end            
     end
 end

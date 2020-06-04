@@ -23,10 +23,13 @@ Helpers.PacketHandler('player:BonusXP', function(playerId, data)
     Players.BonusXP(playerId)
 end)
 
--- redemrp_inventory useable item registrations
-RegisterServerEvent('RegisterUsableItem:Cheese')
-AddEventHandler('RegisterUsableItem:Cheese', function(playerId)
+-- redemrp_inventory Item Handlers
+Helpers.ItemHandler('Cheese', function(playerId)
     Players.FeedHorse(playerId, 50, 50)
+end)
+
+Helpers.ItemHandler('Bandage', function(playerId)
+    Players.Bandage(playerId)
 end)
 
 -- Class Functions
@@ -81,4 +84,11 @@ end
 
 function Players.FeedHorse(playerId, health, stamina)
     Helpers.Packet(playerId, 'player:FeedHorse', { Health = health, Stamina = stamina })
+end
+
+function Players.Bandage(playerId)
+    Helpers.GetCharacter(playerId, function(character)
+        Helpers.Packet(playerId, 'player:UseBandage', { HealAmount = 50 })
+        Helpers.Respond(playerId, '^2A bandage has been applied to you.')
+    end)
 end

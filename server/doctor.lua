@@ -19,12 +19,6 @@ Helpers.PacketHandler('doctor:TreatPlayer', function(playerId, data)
     Doctor.TreatPlayer(playerId, data.PatientId, data.Revive, data.Coords)
 end)
 
--- redemrp_inventory useable item registrations
-RegisterServerEvent('RegisterUsableItem:Bandage')
-AddEventHandler('RegisterUsableItem:Bandage', function(playerId)
-    Doctor.BandagePlayer(playerId)
-end)
-
 -- Class Functions
 function Doctor.GoOnDuty(playerId, locationId)
     -- get the requested location
@@ -117,14 +111,6 @@ function Doctor.CheckIn(playerId, locationId)
         SetTimeout(10000, function()
             Helpers.Packet(playerId, 'doctor:Release')
         end)
-    end)
-end
-
-function Doctor.BandagePlayer(playerId)
-    Helpers.GetCharacter(playerId, function(character)
-        Helpers.Packet(playerId, 'doctor:UseBandage', { HealAmount = 50 })
-
-        Helpers.Respond(playerId, '^2You are applying a bandage to yourself.')
     end)
 end
 

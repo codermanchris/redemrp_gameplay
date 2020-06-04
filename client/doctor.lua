@@ -22,11 +22,6 @@ Helpers.PacketHandler('doctor:ClearRequest', function(data)
     Doctor.IsCheckedIn = false
 end)
 
--- The player has used a bandage and we need to heal
-Helpers.PacketHandler('doctor:UseBandage', function(data) -- { HealAmount = 50 })
-    Doctor.UseBandage(data.HealAmount)
-end)
-
 Helpers.PacketHandler('doctor:TreatPlayer', function(data)
     Doctor.TreatPlayer(data.Revive, data.Coords)
 end)
@@ -259,23 +254,4 @@ function Doctor.HealPlayer()
     Citizen.InvokeNative(0xC6258F41D86676E0, playerPed, 0, 100)  
     -- set stamina to max
     Citizen.InvokeNative(0xC6258F41D86676E0, playerPed, 1, 100)      
-end
-
-function Doctor.UseBandage(healAmount)
-    -- todo
-    -- add some progress bar on the ui     
-    Helpers.MessageUI('core', 'initProgressBar', { Rate = 0.2 }) -- takes 5 seconds so 20 per ticks
-    
-    -- wait 5 seconds and then heal the player a little bit
-    SetTimeout(5000, function()
-        local playerPed = PlayerPedId()
-
-        -- get core values
-        local health = Citizen.InvokeNative(0x36731AC041289BB1, playerPed, 0, Citizen.ResultAsInteger())
-        local stamina = Citizen.InvokeNative(0x36731AC041289BB1, playerPed, 1, Citizen.ResultAsInteger())        
-
-        -- set core values
-        Citizen.InvokeNative(0xC6258F41D86676E0, playerPed, 0, math.clamp(health + 50, 0, 100))
-        Citizen.InvokeNative(0xC6258F41D86676E0, playerPed, 1, math.clamp(stamina + 5, 0, 100))
-    end)        
 end

@@ -60,6 +60,8 @@ var core = {
         core.registerUI("hunter", hunter);
         core.registerUI("lawman", lawman);
         core.registerUI("moonshiner", moonshiner);
+        core.registerUI("posse", posse);
+        core.registerUI("vehiclerental", vehicleRental);
 
         // test
         core.progressBar = new RadialProgress(document.getElementById("progressBar"),{indeterminate:true,colorFg:"#FFFFFF",thick:2.5,fixedTextSize:0.3});

@@ -17,7 +17,9 @@ server_scripts {
     'server/generalstore.lua',
     'server/hunter.lua',
     'server/lawman.lua',
-    'server/moonshiner.lua'    
+    'server/moonshiner.lua',
+    'server/posse.lua',
+    'server/vehiclerental.lua',
 }
 
 client_scripts {
@@ -32,7 +34,9 @@ client_scripts {
     'client/generalstore.lua',
     'client/hunter.lua',
     'client/lawman.lua',
-    'client/moonshiner.lua',    
+    'client/moonshiner.lua',
+    'client/posse.lua',
+    'client/vehiclerental.lua',
 }
 
 ui_page 'client/ui/ui.html'
@@ -59,6 +63,8 @@ files {
     'client/ui/js/hunter.js',
     'client/ui/js/lawman.js',
     'client/ui/js/moonshiner.js',
+    'client/ui/js/posse.js',
+    'client/ui/js/vehiclerental.js',
 
     -- images
     'client/ui/images/wanted.jpg',

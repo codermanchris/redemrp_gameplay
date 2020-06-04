@@ -43,7 +43,7 @@ end
 -- Handle Prompts
 function Helpers.RegisterPrompt(text, actionKey, promptGroup)
 	local handle = PromptRegisterBegin()
-	PromptSetControlAction(handle, actionKey) --0xE8342FF2)
+	PromptSetControlAction(handle, actionKey)
 	PromptSetText(handle, CreateVarString(10, 'LITERAL_STRING', text))
 	PromptSetEnabled(handle, false)
 	PromptSetVisible(handle, false)

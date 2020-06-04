@@ -31,6 +31,38 @@ function Helpers.PacketHandler(packetName, callback)
 end
 -- End Packet Handler
 
+-- This function will be used in conjunction with redemrp_inventory
+-- Register custom item usage through this function
+function Helpers.ItemHandler(itemName, cb)
+	-- validate item name and callback
+	if (itemName == nil or #itemName == 0) then
+		print('Invalid event name.')
+		return	
+	elseif (cb == nil) then
+		print('Invalid event callback.')
+		return
+	end
+
+	-- setup event name
+	local eventName = string.format('RegisterUsableItem:%s', itemName)
+
+	-- validate event is unique
+	if (Helpers.ItemHandlers[eventName] ~= nil) then
+		print(string.format('Duplicate event ignored: %s', eventName))
+		return
+	end
+
+	-- add to event handlers list 
+	Helpers.ItemHandlers[eventName] = cb
+
+	-- register and create event handler
+    RegisterServerEvent(eventName)
+    AddEventHandler(eventName, function(playerId)
+        cb(playerId)
+    end)
+end
+
+
 function Helpers.GetInventory(cb)
 	TriggerEvent("redemrp_inventory:getData", function(data)
     	cb(data)
