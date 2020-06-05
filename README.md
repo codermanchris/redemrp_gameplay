@@ -8,19 +8,19 @@ These jobs are a work in progress. If you want to see these jobs in action, we h
 ## 1. Features and Notes
 * Enable/disable any of the provided jobs in the config.
 * Jobs  
-  * Bounty Hunting **[MOSTLY COMPLETE, NEEDS MORE LOCATIONS AND AI TUNING]**
-  * Delivery **[MOSTLY COMPLETE, NEEDS MORE LOCATIONS]**
-  * Doctor **[MOSTLY COMPLETE, NEEDS REVIVE]**
+  * Bounty Hunting **[COMPLETE(ish); NEEDS MORE LOCATIONS AND MORE DANGER]**
+  * Delivery **[COMPLETE(ish); NEEDS MORE LOCATIONS, ADD LONGER MISSIONS]**
+  * Doctor **[MOSTLY COMPLETE; NEEDS REVIVE]**
   * Fisher **[INCOMPLETE]**
-  * Hunter **[ALMOST DONE, NEEDS MORE LOCATIONS, SOME TWEAKING]**
-  * Lawman **[ALMOST DONE, WORKING ON "MDT" PAPERWORK SYSTEM.]**
+  * Hunter **[COMPLETE(ish); NEEDS MORE LOCATIONS, SOME TWEAKING]**
+  * Lawman **[ALMOST DONE; WORKING ON "MDT" PAPERWORK SYSTEM.]**
   * Moonshiner **[INCOMPLETE]**
   * Auction Yard **[INCOMPLETE]**
   * Miner **[INCOMPLETE]**
   * Lumberjack **[INCOMPLETE]**
-  * Farmhand **[WIP]**
-  * Posse **[WIP]**
-  * Vehicle Rental **[WIP]**
+  * Farmhand **[COMPLETE(ish); NEEDS MORE LOCATIONS]**
+  * Posse **[COMPLETE(ish); STILL WORKING ON ADDING MORE FUNCTIONALITY BUT USABLE]**
+  * Vehicle Rental **[COMPLETE(ish); WILL ADD STAGE COACHES AND OTHER VEHICLES SOON]**
 * Gameplay
   * General Store **[SELLS CHEESE, FEED IT TO YOUR HORSE]**
    
