@@ -17,6 +17,7 @@ var posse = {
         $("#posse").hide();
     },
 
+    // handle create posse
     showCreate: function() {
         $("#createposse").show();
     },
@@ -35,5 +36,23 @@ var posse = {
     },
     onCreated: function(data) {
         
+    },
+
+    // handle posse invite
+    openInvite: function(data) {
+        $("#posseinvitename").html(data.PosseName);
+        $("#posseinvitedby").html(data.InvitedBy);
+        $("#posseinvite").show();
+    },
+    closeInvite: function() {
+        $("#posseinvitename").html('');
+        $("#posseinvitedby").html('');
+        $("#posseinvite").hide();
+        core.sendPost("LoseUIFocus", null, function(data){});
+    },
+    acceptInvite: function() {
+        core.sendPost("posse:AcceptInvite", null, function(data){});
+        $("#posseinvite").hide();
+        core.sendPost("LoseUIFocus", null, function(data){});        
     }
 }

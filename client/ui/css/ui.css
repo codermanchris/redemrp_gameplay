@@ -69,7 +69,9 @@
 #farmhand input[type=button],
 #vehiclerental input[type=button],
 #lawman input[type=button],
-#lawman input[type=text]  {
+#lawman input[type=text],
+#posse input[type=button],
+#posseinvite input[type=button] {
     font-size: 1.2em; 
     font-family: ChineseRocks; 
     padding: 3px; 
@@ -242,6 +244,25 @@
     background-repeat: no-repeat;
     background-size: 550px 650px;     
     font-family: ChineseRocks;
+}
+
+#posseinvite {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -175px;
+
+    width: 350px;
+    height: 200px;
+    color: #000;
+
+    background-image: url('../images/oldparchmentbg.jpg');
+    background-repeat: no-repeat;
+    background-size: 350px 200px;
+    font-family: ChineseRocks;
+    text-align: center;
 }
 
 #vehiclerental {

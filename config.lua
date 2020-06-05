@@ -326,12 +326,14 @@ Moonshiner = {
 }
 
 Posse = {
+    Posses = {},
+    PosseInvites = {},
     Locations = {
         [1] = { 
             Id = 1,
             Name = 'Camp',
             Coords = vector3(-304.19, 806.46, 118.98),
-            Members = {}
+            Members = {}            
         }
     },
 }
