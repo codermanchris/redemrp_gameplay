@@ -297,6 +297,24 @@
         </div>        
     </div>
     
+    <div id='pigeoncarrier'>
+        <div class='padded-container' style='width: 88% !important;'>
+            <div class='sender'>
+                <textarea id='newpigeonmessage' style='width: 100%; height: 100px; font-family: ChineseRocks; background-color: transparent; border: 0px;' maxlength=255></textarea>
+                <div class='contract-footer' style='width: 88% !important;'>            
+                    <input type='button' value='CANCEL' onclick='pigeonCarrier.close();' />
+                    <input type='button' value='SEND' onclick='pigeonCarrier.send();' />
+                </div>        
+            </div>
+            <div class='receiver'>
+                <span id='pigeonmessage'></span><br /><br />
+                <div class='contract-footer' style='width: 88% !important;'>            
+                    <input type='button' value='CLOSE' onclick='pigeonCarrier.close();' />
+                </div>        
+            </div>
+        </div>
+    </div>
+
     <!-- dialogs -->
     <div id='messageDialog'>
         <span class='message'></span><br /><br />
@@ -338,6 +356,7 @@
     <script src="js/hunter.js"></script>
     <script src="js/lawman.js"></script>
     <script src="js/moonshiner.js"></script>
+    <script src="js/pigeoncarrier.js"></script>
     <script src="js/posse.js"></script>
     <script src="js/vehiclerental.js"></script>
 </body>

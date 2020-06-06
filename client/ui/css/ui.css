@@ -71,13 +71,33 @@
 #lawman input[type=button],
 #lawman input[type=text],
 #posse input[type=button],
-#posseinvite input[type=button] {
+#posseinvite input[type=button],
+#pigeoncarrier input[type=button],
+#pigeoncarrier input[type=text] {
     font-size: 1.2em; 
     font-family: ChineseRocks; 
     padding: 3px; 
     background-color: transparent; 
     border-radius: 5px; 
     border: solid 5px #333;
+}
+
+#pigeoncarrier {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -150px;
+
+    width: 300px;
+    height: 200px;
+    color: #000;
+
+    background-image: url('../images/oldparchmentbg.jpg');
+    background-repeat: no-repeat;
+    background-size: 300px 200px;     
+    font-family: ChineseRocks;
 }
 
 #doctor {

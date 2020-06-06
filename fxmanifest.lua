@@ -63,6 +63,7 @@ files {
     'client/ui/js/hunter.js',
     'client/ui/js/lawman.js',
     'client/ui/js/moonshiner.js',
+    'client/ui/js/pigeoncarrier.js',
     'client/ui/js/posse.js',
     'client/ui/js/vehiclerental.js',
 

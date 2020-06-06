@@ -60,6 +60,7 @@ var core = {
         core.registerUI("hunter", hunter);
         core.registerUI("lawman", lawman);
         core.registerUI("moonshiner", moonshiner);
+        core.registerUI("pigeoncarrier", pigeonCarrier);
         core.registerUI("posse", posse);
         core.registerUI("vehiclerental", vehicleRental);
 

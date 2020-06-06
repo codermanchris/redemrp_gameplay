@@ -18,6 +18,25 @@ Helpers.PacketHandler('player:UseBandage', function(data)
     LocalPlayer.UseBandage(data.HealAmount)
 end)
 
+Helpers.PacketHandler('player:SpawnPigeon', function(data)
+    LocalPlayer.SpawnPigeon(data.IsSender)
+end)
+
+Helpers.PacketHandler('player:OpenPigeonEditor', function(data)
+    -- todo: come up with a better plan for finding target id
+    if (data.TargetId ~= nil) then        
+        LocalPlayer.PigeonTargetId = data.TargetId
+    end
+
+    -- open pigeon carrier ui
+    Helpers.OpenUI('pigeoncarrier', data)
+end)
+
+-- Nui Callbacks
+RegisterNUICallback('player:SendPigeon', function(data, cb)
+    Helpers.Packet('player:SendPigeon', { TargetId = LocalPlayer.PigeonTargetId, Message = data.Message })  
+end)
+
 -- Class Functions
 function LocalPlayer.Initialize()
     LocalPlayer.NextBonusAt = GetGameTimer()
@@ -28,6 +47,9 @@ function LocalPlayer.Initialize()
 
     -- this shows reticule
     --Citizen.InvokeNative(0x8BC7C1F929D07BF3, HudHashes.Reticule)
+
+    AddRelationshipGroup('PigeonCarrier')
+    SetRelationshipBetweenGroups(1, 'PigeonCarrier', 'PLAYER')
 end
 
 function LocalPlayer.Tick()
@@ -309,9 +331,8 @@ function LocalPlayer.StartScenario(scenarioHash)
     if (LocalPlayer.IsDead or not DoesEntityExist(playerPed)) then
         return
     end
-
     local heading = GetEntityHeading(playerPed)
-    print('start scenario ' .. tostring(scenarioHash))
+
     Citizen.InvokeNative(0x4D1F61FC34AF3CD1, playerPed, scenarioHash, playerCoords.x, playerCoords.y, playerCoords.z, heading, 0, false)
 end
 
@@ -351,5 +372,59 @@ function LocalPlayer.ToggleHandsUp()
         ClearPedSecondaryTask(playerPed)
     else
         TaskPlayAnim(playerPed, anim, "loop", 1.0, 8.0, 10000, 31, 0, true, 0, false, 0, false)
+    end
+end
+
+function LocalPlayer.GetCurrentZone()
+    -- return the current zone that our player is in
+    return Citizen.InvokeNative(0x43AD8FC02B429D33, GetEntityCoords(PlayerPedId()), 1)    
+end
+
+function LocalPlayer.SpawnPigeon(isSender)
+    if (isSender) then
+        Citizen.CreateThread(function()
+            local animDict = "script_rc@cldn@ig@rsc2_ig1_questionshopkeeper"
+            RequestAnimDict(animDict)
+            while not HasAnimDictLoaded(animDict) do
+                Citizen.Wait(10)
+            end
+            TaskPlayAnim(PlayerPedId(), animDict, "inspectfloor_player", 1.0, 8.0, -1, 1, 0, false, false, false)
+            
+            SetTimeout(4000, function()
+                ClearPedTasks(PlayerPedId())
+                local coords = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 2.0, 0.05)
+                LocalPlayer.PigeonEntity = Helpers.SpawnNPC('A_C_Pigeon', coords.x, coords.y, coords.z)
+
+                -- clean it up after a bit
+                SetTimeout(15000, function()
+                    if (DoesEntityExist(LocalPlayer.PigeonEntity)) then
+                        DeleteEntity(LocalPlayer.PigeonEntity)
+                    end
+                end)
+            end)
+        end)
+    else
+        if (DoesEntityExist(LocalPlayer.PigeonEntity)) then
+            DeleteEntity(LocalPlayer.PigeonEntity)
+        end
+
+        Citizen.CreateThread(function()    
+            local playerCoords = GetEntityCoords(PlayerPedId())
+            local coords = GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 5.0, 2.0)
+            LocalPlayer.PigeonEntity = Helpers.SpawnNPC('A_C_Pigeon', coords.x, coords.y, coords.z)                        
+            SetPedRelationshipGroupHash(LocalPlayer.PigeonEntity, 'PigeonCarrier')                        
+
+            ClearPedTasks(LocalPlayer.PigeonEntity)
+            ClearPedSecondaryTask(LocalPlayer.PigeonEntity)
+            Citizen.InvokeNative(0x971D38760FBC02EF, LocalPlayer.PigeonEntity, true) --SetPedKeepTask            
+            Citizen.InvokeNative(0x6A071245EB0D1882, LocalPlayer.PigeonEntity, PlayerPedId(), -1, 1.0, 2.0, 0, 0) -- TaskGoToEntity          
+
+            -- clean it up after a bit
+            SetTimeout(30000, function()    
+                if (DoesEntityExist(LocalPlayer.PigeonEntity)) then
+                    DeleteEntity(LocalPlayer.PigeonEntity)
+                end
+            end)
+        end)        
     end
 end

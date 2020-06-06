@@ -106,8 +106,16 @@ function Posse.OnReceiveInvite(posseId, posseName, invitedBy)
 end
 
 function Posse.Leave()
+    if (Posse.PosseInfo == nil) then
+        return
+    end
+
+    -- set relationship stuffs just in case and then remove it
+    SetRelationshipBetweenGroups(5, 'PLAYER', Posse.PosseInfo.Name)
+    SetRelationshipBetweenGroups(5, Posse.PosseInfo.Name, 'PLAYER')    
     RemoveRelationshipGroup(Posse.PosseInfo.Name)
 
+    -- clear datas
     Posse.PosseInfo = nil
     Posse.PosseMembers = nil
     Posse.PosseRank = nil    
