@@ -23,6 +23,8 @@ These jobs are a work in progress. If you want to see these jobs in action, we h
   * Vehicle Rental **[COMPLETE(ish); WILL ADD STAGE COACHES AND OTHER VEHICLES SOON]**
 * Gameplay
   * General Store **[SELLS CHEESE, FEED IT TO YOUR HORSE]**
+  * Pigeon Messenger Service **[COMPLETE(ish)]**
+    * use /pigeon [player id] to open the ui and send a pigeon messenger to someone.
    
 ## 2. Requirements
  
