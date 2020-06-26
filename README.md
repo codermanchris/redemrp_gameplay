@@ -1,4 +1,4 @@
-
+PLEASE NOTE: I am not working on this publically right now. I have joined a private team and will not pick this project up until a later date. Hopefully this code is useful to someone.
 
 # redemrp_gameplay
 Here are a set of jobs developed for fun in my spare time for the redem roleplay framework. I am giving out the source code for these jobs in the hopes that other servers might find them useful.
